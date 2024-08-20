@@ -3,6 +3,7 @@ class Character extends MovableObject {
   height = 250;
   x = 10;
   y = 120;
+  speed = 4;
 
   IMAGES_SWIMMING = [
     "img/1.Sharkie/1.IDLE/1.png",
@@ -22,8 +23,9 @@ class Character extends MovableObject {
     "img/1.Sharkie/1.IDLE/15.png",
     "img/1.Sharkie/1.IDLE/16.png",
     "img/1.Sharkie/1.IDLE/17.png",
-    "img/1.Sharkie/1.IDLE/18.png"
+    "img/1.Sharkie/1.IDLE/18.png",
   ];
+  world;
 
   currentImage = 0;
 
@@ -36,10 +38,26 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_SWIMMING.length;
-      let path = this.IMAGES_SWIMMING[i];
-      this.img = this.ImageCache[path];
-      this.currentImage++;
+      if (this.world.keyboard.RIGHT) {
+        this.x += this.speed;
+      }
+      if (this.world.keyboard.LEFT) {
+        this.x -= this.speed;
+      }
+      if (this.world.keyboard.UP) {
+        this.y -= this.speed;
+      }
+      if (this.world.keyboard.DOWN) {
+        this.y += this.speed;
+      }
+    }, 1000 / 60);
+
+    setInterval(() => {
+        let i = this.currentImage % this.IMAGES_SWIMMING.length;
+        let path = this.IMAGES_SWIMMING[i];
+        this.img = this.ImageCache[path];
+        this.currentImage++;
+      
     }, 100);
   }
 
