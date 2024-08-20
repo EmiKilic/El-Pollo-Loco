@@ -16,11 +16,7 @@ class MovableObject {
         arr.forEach((path) => {
         let img = new Image();
         img.src = path;
-        this.ImageCache[path] = path;
-
-        setInterval(() => {
-            this.ImageCache[path] -= 0.15;   
-           }, 1000 / 60);
+        this.ImageCache[path] = img;
     });
     }
 
