@@ -26,6 +26,8 @@ class Character extends MovableObject {
     "img/1.Sharkie/1.IDLE/18.png",
   ];
   world;
+  swimming_sound = new Audio('audio/swimming.mp3');
+  isSwimming = false; 
 
   currentImage = 0;
 
@@ -38,22 +40,36 @@ class Character extends MovableObject {
 
   animate() {
     setInterval(() => {
+    let moving = false;
+
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x*5) {
         this.x += this.speed;
         this.otherDirection = false;
+        moving = true;
       }
       if (this.world.keyboard.LEFT && this.x > -690) {
         this.x -= this.speed;
         this.otherDirection = true;
+        moving = true;
       }
       this.world.camera_x = -this.x + 20;
       if (this.world.keyboard.UP && this.y > -100) {
         this.y -= this.speed;
+        moving = true;
       }
       if (this.world.keyboard.DOWN && this.y < 250) {
         this.y += this.speed;
+        moving = true;
       }
-    }, 1000 / 600); // Am ende auf 60Fps setzen
+
+      if (moving && !this.isSwimming) {
+        this.swimming_sound.play();
+        this.isSwimming = true;
+      } else if (!moving && this.isSwimming) {
+        this.swimming_sound.pause();
+        this.isSwimming = false;
+      }
+    }, 1000 / 60); // Am ende auf 60Fps setzen
 
     setInterval(() => {
         let i = this.currentImage % this.IMAGES_SWIMMING.length;
