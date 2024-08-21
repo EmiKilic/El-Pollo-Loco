@@ -5,6 +5,7 @@ class MovableObject {
   height = 150;
   width = 150;
   ImageCache = {};
+  otherDirection = false;
 
   loadImage(path) {
     this.img = new Image(); // this.img = document.getElementById('Image') <img id="image">
@@ -19,9 +20,7 @@ class MovableObject {
     });
   }
 
-  moveRight() {
-    console.log("Moving right");
-  }
+
 
   moveLeft() {
     setInterval(() => {
