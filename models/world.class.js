@@ -1,29 +1,8 @@
 class World {
   character = new Character();
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  light = [new Light()];
-  backgroundObjects = [
-    new BackgroundObject("img/3. Background/Layers/5. Water/D2.png", -720),
-    new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D2.png", -720),
-    new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D2.png", -720),
-    new BackgroundObject("img/3. Background/Layers/2. Floor/D2.png", -720),
-    new BackgroundObject("img/3. Background/Layers/5. Water/D1.png", 0),
-    new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D1.png", 0),
-    new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D1.png", 0),
-    new BackgroundObject("img/3. Background/Layers/2. Floor/D1.png", 0),
-    new BackgroundObject("img/3. Background/Layers/5. Water/D2.png", 720),
-    new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D2.png", 720),
-    new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D2.png", 720),
-    new BackgroundObject("img/3. Background/Layers/2. Floor/D2.png", 720),
-    new BackgroundObject("img/3. Background/Layers/5. Water/D1.png", 720*2),
-    new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D1.png", 720*2),
-    new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D1.png", 720*2),
-    new BackgroundObject("img/3. Background/Layers/2. Floor/D1.png", 720*2),
-    new BackgroundObject("img/3. Background/Layers/5. Water/D2.png", 720*3),
-    new BackgroundObject("img/3. Background/Layers/4.Fondo 2/D2.png", 720*3),
-    new BackgroundObject("img/3. Background/Layers/3.Fondo 1/D2.png", 720*3),
-    new BackgroundObject("img/3. Background/Layers/2. Floor/D2.png", 720*3),
-  ];
+  enemies = level1.enemies;
+  light = level1.light;
+  backgroundObjects = level1.backgroundObjects;
   canvas;
   ctx;
   keyboard;
@@ -52,7 +31,6 @@ class World {
     this.addToMap(this.character);
 
     this.ctx.translate(-this.camera_x, 0);
-
 
     // Draw() wird immer wieder aufgerufen
     let self = this;
