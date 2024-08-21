@@ -7,6 +7,11 @@ class MovableObject {
   ImageCache = {};
   otherDirection = false;
 
+  // Assuming you have a global state or game manager
+globalGameState = {
+  endbossAnimationStarted: false
+};
+
   loadImage(path) {
     this.img = new Image(); // this.img = document.getElementById('Image') <img id="image">
     this.img.src = path;

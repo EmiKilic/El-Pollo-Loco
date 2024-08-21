@@ -42,7 +42,7 @@ class Character extends MovableObject {
     setInterval(() => {
     let moving = false;
 
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x*5) {
+      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x*3) {
         this.x += this.speed;
         this.otherDirection = false;
         moving = true;
@@ -69,7 +69,7 @@ class Character extends MovableObject {
         this.swimming_sound.pause();
         this.isSwimming = false;
       }
-    }, 1000 / 60); // Am ende auf 60Fps setzen
+    }, 1000 / 600); // Am ende auf 60Fps setzen
 
     setInterval(() => {
       this.playAnimation(this.IMAGES_SWIMMING);
