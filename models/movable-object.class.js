@@ -20,7 +20,12 @@ class MovableObject {
     });
   }
 
-
+playAnimation(images) {
+  let i = this.currentImage % images.length;
+  let path = images[i];
+  this.img = this.ImageCache[path];
+  this.currentImage++;
+}
 
   moveLeft() {
     setInterval(() => {

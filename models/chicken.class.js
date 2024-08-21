@@ -11,9 +11,7 @@ class Chicken extends MovableObject {
   currentImage = 0;
 
   constructor() {
-    super().loadImage(
-      "img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png"
-    );
+    super().loadImage(this.IMAGES_SWIMMING[0]);
     this.loadImages(this.IMAGES_SWIMMING);
 
     this.x = 200 + Math.random() * 500;
@@ -23,12 +21,9 @@ class Chicken extends MovableObject {
 
   animate() {
     this.moveLeft();
-    
+
     setInterval(() => {
-      let i = this.currentImage % this.IMAGES_SWIMMING.length;
-      let path = this.IMAGES_SWIMMING[i];
-      this.img = this.ImageCache[path];
-      this.currentImage++;
+      this.playAnimation(this.IMAGES_SWIMMING);
     }, 150);
   }
 }
