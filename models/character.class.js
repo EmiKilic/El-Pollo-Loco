@@ -25,24 +25,42 @@ class Character extends MovableObject {
     "img/1.Sharkie/1.IDLE/17.png",
     "img/1.Sharkie/1.IDLE/18.png",
   ];
+
+  IMAGES_DEAD = [
+    'img/1.Sharkie/6.dead/2.Electro_shock/1.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/2.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/3.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/4.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/5.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/6.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/7.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/8.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
+    'img/1.Sharkie/6.dead/2.Electro_shock/10.png',
+  ];
   world;
-  swimming_sound = new Audio('audio/swimming.mp3');
-  isSwimming = false; 
+  swimming_sound = new Audio("audio/swimming.mp3");
+  isSwimming = false;
 
   currentImage = 0;
 
   constructor() {
     super().loadImage("img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_SWIMMING);
+    this.loadImages(this.IMAGES_DEAD);
+
 
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-    let moving = false;
+      let moving = false;
 
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x*3) {
+      if (
+        this.world.keyboard.RIGHT &&
+        this.x < this.world.level.level_end_x * 3
+      ) {
         this.x += this.speed;
         this.otherDirection = false;
         moving = true;
@@ -72,7 +90,11 @@ class Character extends MovableObject {
     }, 1000 / 600); // Am ende auf 60Fps setzen
 
     setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIMMING);
+      if (this.isDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else {
+        this.playAnimation(this.IMAGES_SWIMMING);
+      }
     }, 100);
   }
 

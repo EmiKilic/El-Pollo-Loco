@@ -6,6 +6,7 @@ class MovableObject {
   width = 150;
   ImageCache = {};
   otherDirection = false;
+  energy = 100;
 
   // Assuming you have a global state or game manager
   globalGameState = {
@@ -48,6 +49,17 @@ class MovableObject {
         this.y + this.height > mo.y &&
         this.x < mo.x && 
         this.y < mo.y + mo.height;
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
+  }
+
+  isDead() {
+    return this.energy == 0;
   }
 
   playAnimation(images) {
