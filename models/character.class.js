@@ -38,6 +38,12 @@ class Character extends MovableObject {
     'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
     'img/1.Sharkie/6.dead/2.Electro_shock/10.png',
   ];
+
+  IMAGES_HURT = [
+    'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+    'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+    'img/1.Sharkie/5.Hurt/2.Electric shock/3.png',
+  ];
   world;
   swimming_sound = new Audio("audio/swimming.mp3");
   isSwimming = false;
@@ -48,6 +54,7 @@ class Character extends MovableObject {
     super().loadImage("img/1.Sharkie/1.IDLE/1.png");
     this.loadImages(this.IMAGES_SWIMMING);
     this.loadImages(this.IMAGES_DEAD);
+    this.loadImages(this.IMAGES_HURT);
 
 
     this.animate();
@@ -92,6 +99,8 @@ class Character extends MovableObject {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HURT);
       } else {
         this.playAnimation(this.IMAGES_SWIMMING);
       }
