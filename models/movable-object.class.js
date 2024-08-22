@@ -8,9 +8,9 @@ class MovableObject {
   otherDirection = false;
 
   // Assuming you have a global state or game manager
-globalGameState = {
-  endbossAnimationStarted: false
-};
+  globalGameState = {
+    endbossAnimationStarted: false,
+  };
 
   loadImage(path) {
     this.img = new Image(); // this.img = document.getElementById('Image') <img id="image">
@@ -25,16 +25,30 @@ globalGameState = {
     });
   }
 
-playAnimation(images) {
-  let i = this.currentImage % images.length;
-  let path = images[i];
-  this.img = this.ImageCache[path];
-  this.currentImage++;
-}
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  drawFrame(ctx) {
+    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+      ctx.beginPath();
+      ctx.lineWidth = "5";
+      ctx.strokeStyle = "red";
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+    }
+  }
+
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.ImageCache[path];
+    this.currentImage++;
+  }
 
   moveLeft() {
     setInterval(() => {
-        this.x -= 0.15;
-      }, 1000 / 60);
+      this.x -= 0.15;
+    }, 1000 / 60);
   }
 }
