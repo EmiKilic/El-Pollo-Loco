@@ -30,13 +30,24 @@ class MovableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Endboss
+    ) {
       ctx.beginPath();
       ctx.lineWidth = "5";
       ctx.strokeStyle = "red";
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
     }
+  }
+
+  isColliding(mo) {
+    return this.x + this.width > mo.x && 
+        this.y + this.height > mo.y &&
+        this.x < mo.x && 
+        this.y < mo.y + mo.height;
   }
 
   playAnimation(images) {
