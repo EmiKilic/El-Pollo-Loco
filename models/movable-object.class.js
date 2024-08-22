@@ -1,10 +1,4 @@
-class MovableObject {
-  x = 120;
-  y = 200;
-  img;
-  height = 150;
-  width = 150;
-  ImageCache = {};
+class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
   lastHit = 0;
@@ -14,46 +8,17 @@ class MovableObject {
     endbossAnimationStarted: false,
   };
 
-  loadImage(path) {
-    this.img = new Image(); // this.img = document.getElementById('Image') <img id="image">
-    this.img.src = path;
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.ImageCache[path] = img;
-    });
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-
-  drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Chicken ||
-      this instanceof Endboss
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "red";
-      ctx.rect(this.x, this.y, this.width, this.height);
-      ctx.stroke();
-    }
-  }
-
   isColliding(mo) {
-    return this.x + this.width > mo.x && 
-        this.y + this.height > mo.y &&
-        this.x < mo.x && 
-        this.y < mo.y + mo.height;
+    return (
+      this.x + this.width > mo.x &&
+      this.y + this.height > mo.y &&
+      this.x < mo.x &&
+      this.y < mo.y + mo.height
+    );
   }
 
   hit() {
-    this.energy -= 5;
+    this.energy -= 20;
     if (this.energy < 0) {
       this.energy = 0;
     } else {

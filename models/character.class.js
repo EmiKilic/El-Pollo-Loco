@@ -1,8 +1,8 @@
 class Character extends MovableObject {
-  width = 250;
-  height = 250;
-  x = 10;
-  y = 120;
+  width = 150;
+  height = 80;
+  x = 0;
+  y = 220;
   speed = 4;
 
   IMAGES_SWIMMING = [
@@ -66,7 +66,7 @@ class Character extends MovableObject {
 
       if (
         this.world.keyboard.RIGHT &&
-        this.x < this.world.level.level_end_x * 3
+        this.x < this.world.level.level_end_x * 4
       ) {
         this.x += this.speed;
         this.otherDirection = false;
@@ -78,11 +78,11 @@ class Character extends MovableObject {
         moving = true;
       }
       this.world.camera_x = -this.x + 20;
-      if (this.world.keyboard.UP && this.y > -100) {
+      if (this.world.keyboard.UP && this.y > 0) {
         this.y -= this.speed;
         moving = true;
       }
-      if (this.world.keyboard.DOWN && this.y < 250) {
+      if (this.world.keyboard.DOWN && this.y < 400) {
         this.y += this.speed;
         moving = true;
       }
@@ -107,5 +107,4 @@ class Character extends MovableObject {
     }, 100);
   }
 
-  jump() {}
 }
