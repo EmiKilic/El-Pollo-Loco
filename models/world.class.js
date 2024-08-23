@@ -6,6 +6,9 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  coinSound = new Audio('audio/collect_coin.mp3');
+  toxinSound = new Audio('audio/toxin.mp3');
+  hit = new Audio('https://cdn.freesound.org/previews/270/270327_5123851-lq.mp3');
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -26,7 +29,26 @@ class World {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
+          this.hit.play();
           console.log("Collision with Character", this.character.energy);
+        }
+      });
+      this.level.coin.forEach((coin, index) => {
+        if (this.character.isColliding(coin)) {
+          this.character.hitCoin();
+          this.statusBar.showCoin(this.character.money);
+          console.log(this.character.money);
+          this.level.coin.splice(index, 1);
+          this.coinSound.play();
+        }
+      });
+      this.level.toxin.forEach((toxin, index) => {
+        if (this.character.isColliding(toxin)) {
+          this.character.hitToxin();
+          this.statusBar.showPoison(this.character.toxin);
+          console.log(this.character.toxin);
+          this.level.toxin.splice(index, 1);
+          this.toxinSound.play();
         }
       });
     }, 200);

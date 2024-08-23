@@ -46,13 +46,13 @@ class StatusBar extends DrawableObject {
   resolveImageIndexPoison() {
     if (this.money == 0) {
       return 0;
-    } else if (this.money >= 1) {
+    } else if (this.money == 1) {
       return 1;
-    } else if (this.money >= 2) {
+    } else if (this.money == 2) {
       return 2;
-    } else if (this.money >= 3) {
+    } else if (this.money == 3) {
       return 3;
-    } else if (this.money >= 4) {
+    } else if (this.money == 4) {
       return 4;
     } else {
       return 5;
@@ -68,13 +68,13 @@ class StatusBar extends DrawableObject {
   resolveImageIndexCoin() {
     if (this.money == 0) {
       return 0;
-    } else if (this.money >= 1) {
+    } else if (this.money == 1) {
       return 1;
-    } else if (this.money >= 2) {
+    } else if (this.money == 2) {
       return 2;
-    } else if (this.money >= 3) {
+    } else if (this.money == 3) {
       return 3;
-    } else if (this.money >= 4) {
+    } else if (this.money == 4) {
       return 4;
     } else {
       return 5;

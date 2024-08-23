@@ -2,6 +2,8 @@ class MovableObject extends DrawableObject {
   otherDirection = false;
   energy = 100;
   lastHit = 0;
+  money = 0;
+  toxin = 0;
 
   // Assuming you have a global state or game manager
   globalGameState = {
@@ -23,6 +25,24 @@ class MovableObject extends DrawableObject {
       this.energy = 0;
     } else {
       this.lastHit = new Date().getTime();
+    }
+  }
+
+  hitCoin() {
+    if (this.money < 5) {
+      this.money += 1;
+      if (this.money > 5) {
+        this.money = 5;
+      }
+    }
+  }
+
+  hitToxin() {
+    if (this.toxin < 5) {
+      this.toxin += 1;
+      if (this.toxin > 5) {
+        this.toxin = 5;
+      }
     }
   }
 
