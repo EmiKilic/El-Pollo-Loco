@@ -1,6 +1,11 @@
 const level1 = new Level(
   [new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Chicken(), new Endboss()],
 
+  [new Toxic(), new Toxic(), new Toxic(), new Toxic(), new Toxic(), new Toxic()],
+
+  [new Coin(), new Coin(), new Coin(), new Coin(), new Coin(), new Coin()],
+
+
   [new Light()],
 
   [
