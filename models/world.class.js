@@ -9,6 +9,7 @@ class World {
   coinSound = new Audio('audio/collect_coin.mp3');
   toxinSound = new Audio('audio/toxin.mp3');
   hit = new Audio('https://cdn.freesound.org/previews/270/270327_5123851-lq.mp3');
+  object = [new ThrowableObject()];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -25,6 +26,7 @@ class World {
 
   checkCollisions() {
     setInterval(() => {
+      this.checkBubble();
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
@@ -54,6 +56,13 @@ class World {
     }, 200);
   }
 
+  checkBubble() {
+    if (this.keyboard.SPACE) {
+      let bubble = new ThrowableObject(this.character.x + 70  , this.character.y + 15);
+      this.object.push(bubble);
+    }
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -64,7 +73,9 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.toxin);
     this.addObjectsToMap(this.level.coin);
+    this.addObjectsToMap(this.object);
     this.addToMap(this.character);
+
 
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);

@@ -4,6 +4,9 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   money = 0;
   toxin = 0;
+  speedY = 0;
+  speedX = 0;
+  acceleration = 2.5;
 
   // Assuming you have a global state or game manager
   globalGameState = {
@@ -37,6 +40,10 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  falling() {
+    return this.y += 3;
+  }
+
   hitToxin() {
     if (this.toxin < 5) {
       this.toxin += 1;
@@ -67,5 +74,14 @@ class MovableObject extends DrawableObject {
     setInterval(() => {
       this.x -= 0.15;
     }, 1000 / 60);
+  }
+
+  apllyMovement() {
+    setInterval(() => {
+      if (this.speedX > 0) {
+        this.x += this.speedX;
+        this.speedX += this.acceleration;
+      }
+    }, 1000 / 25);
   }
 }
