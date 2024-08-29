@@ -1,17 +1,44 @@
 class MovableObject extends DrawableObject {
+  speed = 0.15;
   otherDirection = false;
+  speedY = 0;
+  acceleration = 2.5;
   energy = 100;
   lastHit = 0;
-  money = 0;
-  toxin = 0;
-  speedY = 0;
-  speedX = 0;
-  acceleration = 2.5;
 
-  // Assuming you have a global state or game manager
-  globalGameState = {
-    endbossAnimationStarted: false,
-  };
+
+  applyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 1000 / 25);
+  }
+
+  jump() {
+    return (this.speedY = 30);
+  }
+
+  isAboveGround() {
+    return this.y < 91;
+  }
+
+  moveRight() {
+    this.x += this.speed;
+    this.otherDirection = false;
+  }
+
+  moveLeft() {
+    this.x -= this.speed;        
+  }
+
+  playAnimation(imgs) {
+    let i = this.currentImage % imgs.length;
+    let path = imgs[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+  }
 
   isColliding(mo) {
     return (
@@ -31,28 +58,6 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  hitCoin() {
-    if (this.money < 5) {
-      this.money += 1;
-      if (this.money > 5) {
-        this.money = 5;
-      }
-    }
-  }
-
-  falling() {
-    return this.y += 3;
-  }
-
-  hitToxin() {
-    if (this.toxin < 5) {
-      this.toxin += 1;
-      if (this.toxin > 5) {
-        this.toxin = 5;
-      }
-    }
-  }
-
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
@@ -61,27 +66,5 @@ class MovableObject extends DrawableObject {
 
   isDead() {
     return this.energy == 0;
-  }
-
-  playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.ImageCache[path];
-    this.currentImage++;
-  }
-
-  moveLeft() {
-    setInterval(() => {
-      this.x -= 0.15;
-    }, 1000 / 60);
-  }
-
-  apllyMovement() {
-    setInterval(() => {
-      if (this.speedX > 0) {
-        this.x += this.speedX;
-        this.speedX += this.acceleration;
-      }
-    }, 1000 / 25);
   }
 }

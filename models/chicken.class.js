@@ -1,28 +1,29 @@
 class Chicken extends MovableObject {
-  height = 50;
-  width = 50;
-  IMAGES_SWIMMING = [
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 1.png",
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 2.png",  
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 3.png",
-    "img/2.Enemy/2 Jelly fish/Regular damage/Lila 4.png",
+  y = 350;
+  height = 80;
+  width = 80;
+
+  IMAGES_WALKING = [
+    "img/3_enemies_chicken/chicken_normal/1_walk/1_w.png",
+    "img/3_enemies_chicken/chicken_normal/1_walk/2_w.png",
+    "img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
-  currentImage = 0;
 
   constructor() {
-    super().loadImage(this.IMAGES_SWIMMING[0]);
-    this.loadImages(this.IMAGES_SWIMMING);
+    super().loadImage("img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
+    this.loadImages(this.IMAGES_WALKING);
 
-    this.x = 400 + Math.random() * 500*4;
-    this.y = 0 + Math.random() * 300;
+    this.x = 200 + Math.random() * 500;
+    this.speed = 0.15 + Math.random() * 0.25;
     this.animate();
   }
 
   animate() {
-    this.moveLeft();
-
     setInterval(() => {
-      this.playAnimation(this.IMAGES_SWIMMING);
-    }, 150);
+      this.moveLeft();
+    }, 1000 / 60);
+    setInterval(() => {
+      this.playAnimation(this.IMAGES_WALKING);
+    }, 200);
   }
 }
