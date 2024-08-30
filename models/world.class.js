@@ -8,7 +8,7 @@ class World {
   statusBar = new StatusBar();
   coinSound = new Audio("audio/collect_coin.mp3");
   bottleSound = new Audio("audio/toxin.mp3");
-  throwableObjects = [];
+  object = [];
 
 
 
@@ -43,13 +43,25 @@ class World {
           this.bottleSound.play();
         }
       });
+      this.level.enemies.forEach((enemy) => {
+        this.object.forEach((obj) => {
+          if (obj.isColliding(enemy)) {
+            console.log("Collision with enemy", this.level.enemies);
+            this.object.splice(index, 1); 
+            this.level.enemies.splice(index, 1);
+          }
+        });
+      });
     }, 200 );
   }
 
   checkThrowObjects() {
-    if (this.keyboard.DButton) {
+    if (this.keyboard.DButton && this.character.bottle > 0) {
       let bottle = new ThrowableObject(200, 200)
-      this.throwableObjects.push(bottle);
+      this.object.push(bottle);
+      this.character.bottle--;
+      this.statusBar.bottle--;
+      this.statusBar.showBottle(this.statusBar.bottle);
     }
   }
 
@@ -81,7 +93,7 @@ class World {
 
 
     this.ctx.translate(-this.camera_x, 0);
-    this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.object);
 
     this.addToMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0);

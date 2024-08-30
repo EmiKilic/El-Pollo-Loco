@@ -35,7 +35,7 @@ class StatusBar extends DrawableObject {
     this.loadImages(this.IMAGES_BOTTLE);
     this.setPercentage(100);
     this.showCoin(0);
-    this.showBottle(0);
+    this.showBottle(this.bottle);
   }
 
   showBottle(value) {

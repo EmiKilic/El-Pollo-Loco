@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject {
   speedY = 0;
   acceleration = 2.5;
   energy = 100;
+  money = 0;
+  bottle = 0;
   lastHit = 0;
 
   applyGravity() {
@@ -64,7 +66,6 @@ class MovableObject extends DrawableObject {
   hitCoin() {
     if (this.money < 5) {
       this.money += 1;
-      a;
       if (this.money > 5) {
         this.money = 5;
       }
@@ -72,13 +73,16 @@ class MovableObject extends DrawableObject {
   }
 
   hitBottle() {
-    if (this.toxin < 5) {
-      this.toxin += 1;
-      if (this.toxin > 5) {
-        this.toxin = 5;
+    if (this.bottle < 5) {
+      this.bottle += 1;
+      console.log(this.bottle);
+      
+      if (this.bottle > 5) {
+        this.bottle = 5;
       }
     }
   }
+
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;

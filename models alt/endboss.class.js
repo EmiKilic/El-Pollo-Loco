@@ -22,6 +22,4 @@ class Endboss extends MovableObject {
   animate() {
     this.moveLeft();
   }
-
-
 }
