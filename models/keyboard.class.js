@@ -4,6 +4,6 @@ class Keyboard extends MovableObject {
     UP = false;
     DOWN = false;
     SPACE = false;
-    DButtton = false;
+    DButton = false;
 
 }

@@ -6,7 +6,6 @@ class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
 
-
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -21,7 +20,11 @@ class MovableObject extends DrawableObject {
   }
 
   isAboveGround() {
-    return this.y < 91;
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      return this.y < 91;
+    }
   }
 
   moveRight() {
@@ -30,7 +33,7 @@ class MovableObject extends DrawableObject {
   }
 
   moveLeft() {
-    this.x -= this.speed;        
+    this.x -= this.speed;
   }
 
   playAnimation(imgs) {
@@ -58,6 +61,24 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  hitCoin() {
+    if (this.money < 5) {
+      this.money += 1;
+      a;
+      if (this.money > 5) {
+        this.money = 5;
+      }
+    }
+  }
+
+  hitBottle() {
+    if (this.toxin < 5) {
+      this.toxin += 1;
+      if (this.toxin > 5) {
+        this.toxin = 5;
+      }
+    }
+  }
   isHurt() {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;

@@ -6,6 +6,10 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  coinSound = new Audio("audio/collect_coin.mp3");
+  bottleSound = new Audio("audio/toxin.mp3");
+  throwableObjects = [];
+
 
 
   constructor(canvas, keyboard) {
@@ -14,20 +18,49 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.run();
+  }
+
+  run() {
+    setInterval(() => {
+      this.checkCollisions();
+      this.checkThrowObjects();
+      this.level.coin.forEach((coin, index) => {
+        if (this.character.isColliding(coin)) {
+          this.character.hitCoin();
+          this.statusBar.showCoin(this.character.money);
+          console.log(this.character.money);
+          this.level.coin.splice(index, 1);
+          this.coinSound.play();
+        }
+      });
+      this.level.bottle.forEach((bottle, index) => {
+        if (this.character.isColliding(bottle)) {
+          this.character.hitBottle();
+          this.statusBar.showBottle(this.character.bottle);
+          console.log(this.character.bottle);
+          this.level.bottle.splice(index, 1);
+          this.bottleSound.play();
+        }
+      });
+    }, 200 );
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.DButton) {
+      let bottle = new ThrowableObject(200, 200)
+      this.throwableObjects.push(bottle);
+    }
   }
 
   checkCollisions() {
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-          console.log("Collision with Character", this.character.energy);
-        }
-      });
-
-    }, 50 );
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+        console.log("Collision with Character", this.character.energy);
+      }
+    });
   }
 
   setWorld() {
@@ -38,13 +71,18 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
-
+   
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
-    this.addObjectsToMap(this.level.enemies);
     this.addToMap(this.character);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.coin);
+    this.addObjectsToMap(this.level.bottle);
+
 
     this.ctx.translate(-this.camera_x, 0);
+    this.addObjectsToMap(this.throwableObjects);
+
     this.addToMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0);
 

@@ -31,5 +31,10 @@ const level1 = new Level(
     new BackgroundObject("img/5_background/layers/3_third_layer/1.png",719 * 4),
     new BackgroundObject("img/5_background/layers/2_second_layer/1.png",719 * 4),
     new BackgroundObject("img/5_background/layers/1_first_layer/1.png",719 * 4),
-  ]
+  ],
+
+  [new Bottle(), new Bottle(), new Bottle(), new Bottle(), new Bottle()],
+
+  [new Coin(), new Coin(), new Coin(), new Coin(), new Coin()]
+
 );
