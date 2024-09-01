@@ -2,6 +2,7 @@ class Character extends MovableObject {
   height = 350;
   width = 150;
   y = 0;
+  x = 0;
   speed = 10;
 
   IMAGES_WALKING = [
@@ -62,7 +63,6 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x * 4) {
         this.moveRight();
         moving = true;
-
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();

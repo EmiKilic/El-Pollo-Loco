@@ -49,8 +49,26 @@ class MovableObject extends DrawableObject {
     return (
       this.x + this.width > mo.x &&
       this.y + this.height > mo.y &&
-      this.x < mo.x &&
+      this.x < mo.x + mo.width &&
       this.y < mo.y + mo.height
+    );
+  }
+
+  isCollidingThrowableObject(mo) {
+    return (
+      world.character.x + this.x + this.width > mo.x &&
+      world.character.y + this.y + this.height > mo.y &&
+      world.character.x + this.x < mo.x + mo.width &&
+      world.character.y + this.y < mo.y + mo.height
+    );
+  }
+
+  isBottomCollidingWithTop(mo) {
+    return (
+      this.x + this.width > mo.x && // Right edge of the character is past the left edge of `mo`
+      this.x < mo.x + mo.width && // Left edge of the character is before the right edge of `mo`
+      this.y + this.height >= mo.y && // Bottom edge of the character is at or below the top edge of `mo`
+      this.y + this.height <= mo.y + mo.height // Bottom edge of the character is still within the height of `mo` (to ensure it's actually colliding with the top)
     );
   }
 
@@ -76,7 +94,7 @@ class MovableObject extends DrawableObject {
     if (this.bottle < 5) {
       this.bottle += 1;
       console.log(this.bottle);
-      
+
       if (this.bottle > 5) {
         this.bottle = 5;
       }
@@ -91,5 +109,9 @@ class MovableObject extends DrawableObject {
 
   isDead() {
     return this.energy == 0;
+  }
+
+  died() {
+    this.energy = 0;
   }
 }

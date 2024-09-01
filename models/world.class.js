@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  endboss = new Endboss();
   level = level1;
   canvas;
   ctx;
@@ -24,7 +25,11 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkThrowObjects();
+      this.checkCollisionsEndboss();
+      this.checkCollisionsThrowable();
+      this.checkBottomTopCollision();
+
+
       this.level.coin.forEach((coin, index) => {
         if (this.character.isColliding(coin)) {
           this.character.hitCoin();
@@ -43,26 +48,59 @@ class World {
           this.bottleSound.play();
         }
       });
-      this.level.enemies.forEach((enemy) => {
-        this.object.forEach((obj) => {
-          if (obj.isColliding(enemy)) {
-            console.log("Collision with enemy", this.level.enemies);
-            this.object.splice(index, 1); 
-            this.level.enemies.splice(index, 1);
+    }, 1000 / 60);
+
+    setInterval(() => {
+      this.checkThrowObjects();
+
+    }, 200);
+  }
+
+  checkBottomTopCollision() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isBottomCollidingWithTop(enemy)) {
+        console.log("Character's bottom collided with the top of an enemy.");
+        this.character.jump();
+        // Additional actions, such as increasing score or playing a sound, can be added here
+      }
+    });
+  }
+    
+  checkCollisionsThrowable() {
+    this.object.forEach( object =>{
+      this.level.enemies.forEach( enemy =>{
+          if(!enemy.isDead()){
+              if(object.isCollidingThrowableObject(enemy)){
+                  console.log("Enemy Hit");
+                  enemy.died();
+                  setTimeout(()=>{
+                      let position = this.level.enemies.indexOf(enemy);
+                      this.level.enemies.splice(position, 1);
+                  }, 1000 / 60);
+              }
           }
-        });
       });
-    }, 200 );
+  } );
   }
 
   checkThrowObjects() {
-    if (this.keyboard.DButton && this.character.bottle > 0) {
-      let bottle = new ThrowableObject(200, 200)
+    //&& this.character.bottle > 0
+    if (this.keyboard.DButton ) {
+      let bottle = new ThrowableObject(this.character.x + this.camera_x, this.character.y)
       this.object.push(bottle);
       this.character.bottle--;
       this.statusBar.bottle--;
+
       this.statusBar.showBottle(this.statusBar.bottle);
     }
+  }
+
+  checkCollisionsEndboss() {
+      if (this.character.isColliding(this.endboss)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+        console.log("Collision with Character", this.character.energy);
+      }
   }
 
   checkCollisions() {
@@ -90,6 +128,7 @@ class World {
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.coin);
     this.addObjectsToMap(this.level.bottle);
+    this.addToMap(this.endboss);
 
 
     this.ctx.translate(-this.camera_x, 0);
