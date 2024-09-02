@@ -1,6 +1,5 @@
 class World {
   character = new Character();
-  endboss = new Endboss();
   level = level1;
   canvas;
   ctx;
@@ -10,8 +9,6 @@ class World {
   coinSound = new Audio("audio/collect_coin.mp3");
   bottleSound = new Audio("audio/toxin.mp3");
   object = [];
-
-
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -25,10 +22,8 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkCollisionsEndboss();
-      this.checkCollisionsThrowable();
+      this.checkCollisionsEB();
       this.checkBottomTopCollision();
-
 
       this.level.coin.forEach((coin, index) => {
         if (this.character.isColliding(coin)) {
@@ -52,55 +47,70 @@ class World {
 
     setInterval(() => {
       this.checkThrowObjects();
-
     }, 200);
   }
 
   checkBottomTopCollision() {
     this.level.enemies.forEach((enemy) => {
-      if (this.character.isBottomCollidingWithTop(enemy)) {
-        console.log("Character's bottom collided with the top of an enemy.");
-        this.character.jump();
-        // Additional actions, such as increasing score or playing a sound, can be added here
+      if (!enemy.isDead()) {
+        if (this.character.isBottomCollidingWithTop(enemy)) {
+          console.log("Character's bottom collided with the top of an enemy.");
+          this.character.jump();
+          enemy.died();
+          setTimeout(() => {
+            let position = this.level.enemies.indexOf(enemy);
+            this.level.enemies.splice(position, 1);
+          }, 1000 / 60);
+        }
       }
     });
   }
-    
+
   checkCollisionsThrowable() {
-    this.object.forEach( object =>{
-      this.level.enemies.forEach( enemy =>{
-          if(!enemy.isDead()){
-              if(object.isCollidingThrowableObject(enemy)){
-                  console.log("Enemy Hit");
-                  enemy.died();
-                  setTimeout(()=>{
-                      let position = this.level.enemies.indexOf(enemy);
-                      this.level.enemies.splice(position, 1);
-                  }, 1000 / 60);
-              }
+    this.object.forEach((object) => {
+      this.level.enemies.forEach((enemy) => {
+        if (!enemy.isDead()) {
+          if (object.isCollidingThrowableObject(enemy)) {
+            console.log("Enemy Hit");
+            enemy.died();
+            setTimeout(() => {
+              let position = this.level.enemies.indexOf(enemy);
+              this.level.enemies.splice(position, 1);
+            }, 1000 / 60);
           }
+        }
       });
-  } );
+    });
+  }
+
+  checkCollisionsEndboss() {
+    this.object.forEach((object) => {
+      this.level.endboss.forEach((enemy) => {
+        if (!enemy.isDead()) {
+          if (object.isCollidingThrowableObject(enemy)) {
+            console.log("Enemy Hit");
+            enemy.hitEndboss();
+          }
+        }
+      });
+    });
   }
 
   checkThrowObjects() {
     //&& this.character.bottle > 0
-    if (this.keyboard.DButton ) {
-      let bottle = new ThrowableObject(this.character.x + this.camera_x, this.character.y)
+    if (this.keyboard.DButton) {
+      let bottle = new ThrowableObject(
+        this.character.x + this.camera_x,
+        this.character.y
+      );
       this.object.push(bottle);
       this.character.bottle--;
       this.statusBar.bottle--;
 
       this.statusBar.showBottle(this.statusBar.bottle);
     }
-  }
-
-  checkCollisionsEndboss() {
-      if (this.character.isColliding(this.endboss)) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.energy);
-        console.log("Collision with Character", this.character.energy);
-      }
+    this.checkCollisionsThrowable();
+    this.checkCollisionsEndboss();
   }
 
   checkCollisions() {
@@ -112,7 +122,15 @@ class World {
       }
     });
   }
-
+  checkCollisionsEB() {
+    this.level.endboss.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+        console.log("Collision with Character", this.character.energy);
+      }
+    });
+  }
   setWorld() {
     this.character.world = this;
   }
@@ -121,15 +139,14 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
-   
+
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.level.coin);
     this.addObjectsToMap(this.level.bottle);
-    this.addToMap(this.endboss);
-
+    this.addObjectsToMap(this.level.endboss);
 
     this.ctx.translate(-this.camera_x, 0);
     this.addObjectsToMap(this.object);
