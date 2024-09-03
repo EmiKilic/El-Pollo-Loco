@@ -127,4 +127,12 @@ class MovableObject extends DrawableObject {
   died() {
     this.energy = 0;
   }
+
+  fall() {
+    this.y += 5;
+  }
+
+  fallEndboss() {
+    this.y += 20;
+  }
 }

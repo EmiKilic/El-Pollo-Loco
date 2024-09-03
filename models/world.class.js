@@ -21,9 +21,11 @@ class World {
 
   run() {
     setInterval(() => {
+      this.checkBottomTopCollision();
+    }, 10);
+    setInterval(() => {
       this.checkCollisions();
       this.checkCollisionsEB();
-      this.checkBottomTopCollision();
 
       this.level.coin.forEach((coin, index) => {
         if (this.character.isColliding(coin)) {
@@ -56,11 +58,14 @@ class World {
         if (this.character.isBottomCollidingWithTop(enemy)) {
           console.log("Character's bottom collided with the top of an enemy.");
           this.character.jump();
-          enemy.died();
+          enemy.hitEndboss();
+          setInterval(() => {
+            enemy.fall();
+          }, 50);
           setTimeout(() => {
             let position = this.level.enemies.indexOf(enemy);
-            this.level.enemies.splice(position, 1);
-          }, 1000 / 60);
+            this.level.enemies.splice(position, 0);
+          }, 1000);
         }
       }
     });
@@ -72,6 +77,8 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
+            //
+            this.object.splice(object);
             enemy.died();
             setTimeout(() => {
               let position = this.level.enemies.indexOf(enemy);
@@ -89,6 +96,7 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
+            this.object.splice(object, 1);
             enemy.hitEndboss();
           }
         }
@@ -97,8 +105,7 @@ class World {
   }
 
   checkThrowObjects() {
-    //&& this.character.bottle > 0
-    if (this.keyboard.DButton) {
+    if (this.keyboard.DButton && this.character.bottle > 0) {
       let bottle = new ThrowableObject(
         this.character.x + this.camera_x,
         this.character.y
