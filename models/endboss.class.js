@@ -83,41 +83,40 @@ class Endboss extends MovableObject {
         this.playSound();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
+      } else if (this.isColliding(world.character)) {
+        this.playAnimationOnce(this.IMAGES_ATTACK);
       } else if (this.shouldTriggerAlert() && !this.alertTriggered) {
-        this.playAlertAnimation(); // Trigger the alert animation once
+        this.playAlertAnimation();
       } else if (this.walkingStarted) {
-        // Only start walking after the alert finishes
         this.playAnimation(this.IMAGES_WALKING);
         this.moveLeft();
       }
-    }, 200); // Main game loop checking every 200ms
+    }, 200);
   }
 
   shouldTriggerAlert() {
-    const alertDistance = 700 * 3; // Adjust this threshold to your needs
+    const alertDistance = 700 * 3;
     return !this.alertTriggered && world.character.x >= alertDistance;
   }
 
   playAlertAnimation() {
     if (!this.alertTriggered) {
-      this.alertTriggered = true; // Ensure this only runs once
+      this.alertTriggered = true; 
       this.playAnimationOnce(this.IMAGES_ALERT, () => {
-        // After alert finishes, start walking
         this.walkingStarted = true;
       });
     }
   }
 
-  // Helper function to play animation once and then execute a callback
   playAnimationOnce(images, callback) {
     let i = 0;
     const interval = setInterval(() => {
       this.loadImage(images[i]);
       i++;
       if (i >= images.length) {
-        clearInterval(interval); // Stop animation after all frames are played
-        if (callback) callback(); // Execute callback if provided
+        clearInterval(interval); 
+        if (callback) callback();
       }
-    }, 200); // Assuming 200ms per frame
+    }, 200);
   }
 }
