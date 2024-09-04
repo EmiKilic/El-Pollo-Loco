@@ -1,6 +1,8 @@
 class Endboss extends MovableObject {
   height = 450;
   width = 450;
+  gameWin = new Audio('audio/win.mp3');
+  gameWinPlayed = false;
 
   IMAGES_ALERT = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -31,6 +33,17 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/5_dead/G25.png",
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
+
+  IMAGES_ATTACK = [
+    "img/4_enemie_boss_chicken/3_attack/G13.png",
+    "img/4_enemie_boss_chicken/3_attack/G14.png",
+    "img/4_enemie_boss_chicken/3_attack/G15.png",
+    "img/4_enemie_boss_chicken/3_attack/G16.png",
+    "img/4_enemie_boss_chicken/3_attack/G17.png",
+    "img/4_enemie_boss_chicken/3_attack/G18.png",
+    "img/4_enemie_boss_chicken/3_attack/G19.png",
+    "img/4_enemie_boss_chicken/3_attack/G20.png",
+  ];
   currentImage = 0;
   animationStarted = false;
 
@@ -40,10 +53,20 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-    this.x = 810 * 3; // Starting X position of the Endboss
+    this.loadImages(this.IMAGES_ATTACK);
+    this.x = 810 * 3;
     this.y = 20;
+    this.speed = 2.5;
+
     this.animate();
   }
+  playSound() {
+  if (!this.gameWinPlayed) {
+    this.gameWin.play();
+    this.gameWinPlayed = true;
+    gameStarted = false;
+  }
+}
 
   animate() {
     setInterval(() => {
@@ -51,6 +74,7 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_DEAD);
         this.fallEndboss();
         document.getElementById('GameWin').style.display = "block";
+        this.playSound();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else {

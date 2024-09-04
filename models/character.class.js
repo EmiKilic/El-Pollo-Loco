@@ -4,6 +4,8 @@ class Character extends MovableObject {
   y = 0;
   x = 0;
   speed = 10;
+  loose = new Audio('audio/loose.mp3');
+  gameLoosePlayed = false;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -70,6 +72,14 @@ class Character extends MovableObject {
     this.applyGravity();
   }
 
+  playSound() {
+    if (!this.gameLoosePlayed) {
+      this.loose.play();
+      this.gameLoosePlayed = true;
+      gameStarted = false;
+    }
+  }
+
   animate() {
     setInterval(() => {
       let moving = false;
@@ -85,6 +95,7 @@ class Character extends MovableObject {
       }
       if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
+        this.jumpUp.play();
       }
       this.world.camera_x = -this.x + 100;
 
@@ -101,6 +112,7 @@ class Character extends MovableObject {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fall();
+        this.playSound();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {

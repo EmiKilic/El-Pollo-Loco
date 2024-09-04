@@ -84,6 +84,10 @@ function toggleFullscreen() {
   }
 }
 
+function muteSounds() {
+    world.character.jumpUp.mute();
+}
+
 window.addEventListener("keydown", (e) => {
   if (!gameStarted) return; // Ignoriere Tastatureingaben, wenn das Spiel nicht gestartet ist
 

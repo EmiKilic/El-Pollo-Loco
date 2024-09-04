@@ -8,6 +8,9 @@ class World {
   statusBar = new StatusBar();
   coinSound = new Audio("audio/collect_coin.mp3");
   bottleSound = new Audio("audio/toxin.mp3");
+  chickenDead = new Audio("audio/chickenDead.mp3");
+  shatter = new Audio("audio/bottleShatter.mp3");
+  damage = new Audio("audio/damage.mp3");
   object = [];
 
   constructor(canvas, keyboard) {
@@ -62,6 +65,7 @@ class World {
           console.log("Character's bottom collided with the top of an enemy.");
           this.character.jump();
           enemy.hitEndboss();
+          this.chickenDead.play();
           setInterval(() => {
             enemy.fall();
           }, 50);
@@ -80,7 +84,7 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
-            //
+            this.shatter.play();
             this.object.splice(object);
             enemy.died();
             setTimeout(() => {
@@ -99,6 +103,8 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
+            this.shatter.play();
+            this.chickenDead.play();
             this.object.splice(object, 1);
             enemy.hitEndboss();
           }
@@ -131,6 +137,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
+        this.damage.play();
         this.statusBar.setPercentage(this.character.energy);
         console.log("Collision with Character", this.character.energy);
       }
@@ -140,6 +147,7 @@ class World {
     this.level.endboss.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
+        this.damage.play();
         this.statusBar.setPercentage(this.character.energy);
         console.log("Collision with Character", this.character.energy);
       }
@@ -208,7 +216,7 @@ class World {
   }
 
   GameOver() {
-    const over = document.getElementById('GameOver');
+    const over = document.getElementById("GameOver");
     if (this.character.energy == 0) {
       over.style.display = "block";
     } else {
