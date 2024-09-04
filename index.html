@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,13 +23,27 @@
     <script src="levels/level1.js"></script>
     <script src="js/game.js"></script>
 </head>
+
 <body onload="init()">
-    
+
     <h1>EL POLLO LOCO</h1>
 
-    <canvas id="canvas" width="720px" height="480px">
+    <div id="fullscreen" class="main-content">
+        <div class="canvas-container">
+            <img src="img/10.Buttons/Start/1.png" class="start" alt="" onclick="startGame()" id="startButton">
+            <canvas id="canvas" width="720px" height="480px"></canvas>
+            <div class="icons">
+                <img class="icon-corner" src="img/10.Buttons/settings.png" alt="" onclick="toggleSettings()">
+                <img class="icon-corner" src="img/10.Buttons/Audio.png" alt="">
+                <img class="icon-corner" src="img/10.Buttons/FullScreen.png" alt="" onclick="toggleFullscreen()">
+            </div>
+        </div>
 
-    </canvas>
-
+        <!-- Popup für Einstellungen -->
+        <div id="settingsPopup" class="popup" onclick="toggleSettings()">
+            <img src="img/10.Buttons/Instructions 2.png" alt="">
+        </div>
+    </div>
 </body>
+
 </html>

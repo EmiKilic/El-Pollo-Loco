@@ -30,6 +30,80 @@ h1 {
     margin: 50px;
 }
 
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas-container {
+    position: relative; /* Ensures elements are positioned relative to the canvas */
+    width: 720px;  /* Matches canvas width */
+    height: 480px; /* Matches canvas height */
+}
+
+#canvas {
+    display: block;
+}
+
+.start {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 100px;
+    margin: 0;
+}
+
+.start:hover {
+    cursor: pointer;
+    height: 105px;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 60;
+    width: 200px;
+}
+
+.icons img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.icons img:hover {
+    transform: scale(1.1);
+}
+
+.popup {
+    display: none; /* Popup ist standardmäßig versteckt */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: #BCBAD1;
+    height: 30vh;
+
+    img {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.popup h2 {
+    margin-top: 0;
+}
+
 @media only screen and (max-width: 720px) {
     canvas {
         width: 100%;
