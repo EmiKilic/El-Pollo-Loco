@@ -4,6 +4,7 @@ class Character extends MovableObject {
   y = 0;
   x = 0;
   speed = 10;
+  jumpUp = new Audio('audio/jump.mp3');
   loose = new Audio('audio/loose.mp3');
   gameLoosePlayed = false;
 

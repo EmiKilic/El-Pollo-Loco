@@ -13,7 +13,7 @@ function init() {
 }
 
 function reloadCanvas() {
-    location.reload();
+  location.reload();
 }
 
 function drawStartScreen() {
@@ -30,7 +30,7 @@ function drawStartScreen() {
 }
 
 function startGame() {
-  if (gameStarted) return; 
+  if (gameStarted) return;
   initLevel();
   document.getElementById("startButton").style.display = "none";
 
@@ -48,6 +48,16 @@ function toggleSettings() {
     popup.style.display = "block";
   } else {
     popup.style.display = "none";
+  }
+}
+
+function muteSounds() {
+  var audioIcon = document.getElementById("audioEmblem");
+
+  if (audioIcon.src.includes("Audio.png")) {
+    audioIcon.src = "img/10.Buttons/Stumm.png";
+  } else {
+    audioIcon.src = "img/10.Buttons/Audio.png";
   }
 }
 
@@ -82,10 +92,6 @@ function toggleFullscreen() {
       document.msExitFullscreen();
     }
   }
-}
-
-function muteSounds() {
-    world.character.jumpUp.mute();
 }
 
 window.addEventListener("keydown", (e) => {

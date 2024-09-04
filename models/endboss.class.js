@@ -1,8 +1,10 @@
 class Endboss extends MovableObject {
   height = 450;
   width = 450;
-  gameWin = new Audio('audio/win.mp3');
+  gameWin = new Audio("audio/win.mp3");
   gameWinPlayed = false;
+  alertTriggered = false;
+  walkingStarted = false;
 
   IMAGES_ALERT = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -47,8 +49,9 @@ class Endboss extends MovableObject {
   currentImage = 0;
   animationStarted = false;
 
-  constructor() {
-    super().loadImage(this.IMAGES_WALKING[0]);
+  constructor(player) {
+    // Add player as an argument
+    super().loadImage(this.IMAGES_ALERT[0]); // Start with the alert image
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_HURT);
@@ -58,29 +61,63 @@ class Endboss extends MovableObject {
     this.y = 20;
     this.speed = 2.5;
 
+    this.player = player; // Store player reference
+
     this.animate();
   }
+
   playSound() {
-  if (!this.gameWinPlayed) {
-    this.gameWin.play();
-    this.gameWinPlayed = true;
-    gameStarted = false;
+    if (!this.gameWinPlayed) {
+      this.gameWin.play();
+      this.gameWinPlayed = true;
+      gameStarted = false;
+    }
   }
-}
 
   animate() {
     setInterval(() => {
       if (this.isDeadEndboss()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fallEndboss();
-        document.getElementById('GameWin').style.display = "block";
+        document.getElementById("GameWin").style.display = "block";
         this.playSound();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
-      } else {
+      } else if (this.shouldTriggerAlert() && !this.alertTriggered) {
+        this.playAlertAnimation(); // Trigger the alert animation once
+      } else if (this.walkingStarted) {
+        // Only start walking after the alert finishes
         this.playAnimation(this.IMAGES_WALKING);
         this.moveLeft();
       }
-    }, 200);
+    }, 200); // Main game loop checking every 200ms
+  }
+
+  shouldTriggerAlert() {
+    const alertDistance = 700 * 3; // Adjust this threshold to your needs
+    return !this.alertTriggered && world.character.x >= alertDistance;
+  }
+
+  playAlertAnimation() {
+    if (!this.alertTriggered) {
+      this.alertTriggered = true; // Ensure this only runs once
+      this.playAnimationOnce(this.IMAGES_ALERT, () => {
+        // After alert finishes, start walking
+        this.walkingStarted = true;
+      });
+    }
+  }
+
+  // Helper function to play animation once and then execute a callback
+  playAnimationOnce(images, callback) {
+    let i = 0;
+    const interval = setInterval(() => {
+      this.loadImage(images[i]);
+      i++;
+      if (i >= images.length) {
+        clearInterval(interval); // Stop animation after all frames are played
+        if (callback) callback(); // Execute callback if provided
+      }
+    }, 200); // Assuming 200ms per frame
   }
 }
