@@ -18,14 +18,14 @@ class MovableObject extends DrawableObject {
   }
 
   jump() {
-    return (this.speedY = 30);
+    return (this.speedY = 25);
   }
 
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
     } else {
-      return this.y < 91;
+      return this.y < 190;
     }
   }
 
@@ -135,4 +135,5 @@ class MovableObject extends DrawableObject {
   fallEndboss() {
     this.y += 20;
   }
+
 }

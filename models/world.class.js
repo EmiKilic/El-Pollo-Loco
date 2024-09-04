@@ -24,9 +24,6 @@ class World {
       this.checkBottomTopCollision();
     }, 10);
     setInterval(() => {
-      this.checkCollisions();
-      this.checkCollisionsEB();
-
       this.level.coin.forEach((coin, index) => {
         if (this.character.isColliding(coin)) {
           this.character.hitCoin();
@@ -46,6 +43,12 @@ class World {
         }
       });
     }, 1000 / 60);
+
+    setInterval(() => {
+      this.checkCollisions();
+      this.GameOver();
+      this.checkCollisionsEB();
+    }, 400);
 
     setInterval(() => {
       this.checkThrowObjects();
@@ -105,7 +108,11 @@ class World {
   }
 
   checkThrowObjects() {
-    if (this.keyboard.DButton && this.character.bottle > 0) {
+    if (
+      this.keyboard.DButton &&
+      this.character.bottle > 0 &&
+      this.character.otherDirection == false
+    ) {
       let bottle = new ThrowableObject(
         this.character.x + this.camera_x,
         this.character.y
@@ -198,5 +205,14 @@ class World {
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();
+  }
+
+  GameOver() {
+    const over = document.getElementById('GameOver');
+    if (this.character.energy == 0) {
+      over.style.display = "block";
+    } else {
+      over.style.display = "none";
+    }
   }
 }

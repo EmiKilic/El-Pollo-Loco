@@ -1,7 +1,7 @@
 class Endboss extends MovableObject {
   height = 450;
   width = 450;
-  
+
   IMAGES_ALERT = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
     "img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -50,6 +50,7 @@ class Endboss extends MovableObject {
       if (this.isDeadEndboss()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fallEndboss();
+        document.getElementById('GameWin').style.display = "block";
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
       } else {

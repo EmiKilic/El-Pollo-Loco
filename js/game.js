@@ -12,6 +12,10 @@ function init() {
   drawStartScreen();
 }
 
+function reloadCanvas() {
+    location.reload();
+}
+
 function drawStartScreen() {
   // Canvas löschen
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -26,31 +30,26 @@ function drawStartScreen() {
 }
 
 function startGame() {
-  if (gameStarted) return; // Verhindert mehrfaches Starten des Spiels
-
+  if (gameStarted) return; 
   initLevel();
   document.getElementById("startButton").style.display = "none";
 
   gameStarted = true;
 
-  // Canvas leeren und das Spiel starten
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Welt und Spiel-Logik initialisieren
   world = new World(canvas, keyboard);
 }
 
 function toggleSettings() {
-    const popup = document.getElementById('settingsPopup');
-    
-    // Toggle Sichtbarkeit des Popups
-    if (popup.style.display === 'none' || popup.style.display === '') {
-      popup.style.display = 'block';
-    } else {
-      popup.style.display = 'none';
-    }
+  const popup = document.getElementById("settingsPopup");
+
+  if (popup.style.display === "none" || popup.style.display === "") {
+    popup.style.display = "block";
+  } else {
+    popup.style.display = "none";
   }
-  
+}
 
 function toggleFullscreen() {
   const elem = document.documentElement; // Use the entire document as the fullscreen element
