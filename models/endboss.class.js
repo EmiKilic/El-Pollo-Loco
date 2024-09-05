@@ -71,6 +71,7 @@ class Endboss extends MovableObject {
       this.gameWinPlayed = true;
       gameStarted = false;
       sound.pause();
+      bossSpawn.pause();
     }
   }
 

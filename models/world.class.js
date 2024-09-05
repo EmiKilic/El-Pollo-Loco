@@ -110,7 +110,7 @@ class World {
 
   checkThrowObjects() {
     if (
-      this.keyboard.DButton &&
+      this.keyboard.SPACE &&
       this.character.bottle > 0 &&
       this.character.otherDirection == false
     ) {

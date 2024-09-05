@@ -7,7 +7,6 @@ class MovableObject extends DrawableObject {
   money = 0;
   bottle = 0;
   lastHit = 0;
-  gameWin = new Audio('audio/win.mp3');
 
 
   applyGravity() {

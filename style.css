@@ -3,12 +3,21 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-image: url("img/background.png");
+    justify-content: center;
     height: 100vh;
+    /* Ensure the body takes the full viewport height */
+    background-image: url("img/background.png");
     background-size: cover;
+    /* Ensure the background covers the entire area */
+    background-position: center;
+    /* Center the background image */
     background-repeat: no-repeat;
+    /* Prevent background repetition */
+    background-attachment: fixed;
+    /* Keep the background in place even when scrolling */
     font-family: 'Zabars', Arial, Helvetica, sans-serif;
 }
+
 
 @font-face {
     font-family: 'Zabars';
@@ -20,6 +29,10 @@ canvas {
     background-color: black;
     border: 5px solid rgba(18, 173, 31, 0.377);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: block;
+    width: 100%;
+    /* Make canvas responsive */
+    height: auto;
 }
 
 h1 {
@@ -37,13 +50,13 @@ h1 {
 }
 
 .canvas-container {
-    position: relative; /* Ensures elements are positioned relative to the canvas */
-    width: 720px;  /* Matches canvas width */
-    height: 480px; /* Matches canvas height */
-}
-
-#canvas {
-    display: block;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    /* Ensure the container takes full width */
+    max-width: 720px;
+    /* Limit the max width to your canvas size */
+    height: auto;
 }
 
 .start {
@@ -69,7 +82,7 @@ h1 {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    height: 60;
+    height: 60px;
     width: 200px;
 }
 
@@ -85,7 +98,8 @@ h1 {
 }
 
 .popup {
-    display: none; /* Popup ist standardmäßig versteckt */
+    display: none;
+    /* Popup ist standardmäßig versteckt */
     position: absolute;
     height: 480px;
     width: 720px;
@@ -106,11 +120,56 @@ h1 {
     position: absolute;
     height: 480px;
     width: 720px;
-    img {
 
+    img {
         height: 490px;
         width: 730px;
     }
+}
+
+.mobile {
+    position: absolute;
+    /* Position relative to the canvas container */
+    bottom: 10px;
+    /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    /* Take the full width of the canvas */
+    display: flex;
+    justify-content: space-between;
+    z-index: 10;
+    /* Ensure the mobile buttons are on top of the canvas */
+    display: none;
+
+    img {
+        border: 1px solid black;
+        border-radius: 50%;
+        background-color: #F2CB89;
+        margin: 5px;
+        height: 50px;
+        width: 50px;
+    }
+
+    img:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+    }
+}
+
+#rotateMessage {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    padding-top: 50%;
+    z-index: 9999;
 }
 
 @media only screen and (max-width: 720px) {
@@ -121,14 +180,74 @@ h1 {
     h1 {
         display: none;
     }
+
+    .mobile {
+        display: flex;
+        width: 100%;
+    }
+
+    .start {
+        left: 10px;
+    }
+
+    .icons {
+        top: 40px;
+        align-items: start;
+
+    }
+
+    .canvas-container {
+        width: 100%;
+    }
 }
+
+@media only screen and (max-height: 720px) {
+    h1 {
+        display: none;
+    }
+
+    .mobile {
+        display: flex;
+        width: 100%;
+    }
+
+    .start {
+        left: 10px;
+    }
+
+    .icons {
+        top: 40px;
+        align-items: start;
+
+    }
+}
+
 
 @media only screen and (max-height: 480px) {
     canvas {
-        height: 100%;
+        height: 100vh;
     }
 
     h1 {
         display: none;
+    }
+
+    .mobile {
+        display: flex;
+        width: 100%;
+    }
+
+    .start {
+        left: 10px;
+    }
+
+    .icons {
+        top: 40px;
+        align-items: start;
+    }
+
+    .canvas-container {
+        width: 100%;
+        height: 100vh;
     }
 }

@@ -6,6 +6,8 @@ class Character extends MovableObject {
   speed = 10;
 
   gameLoosePlayed = false;
+  lastActionTime = new Date().getTime();
+  idleTimeLimit = 15000; 
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -85,16 +87,18 @@ class Character extends MovableObject {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x * 4) {
         this.moveRight();
         moving = true;
+        this.lastActionTime = new Date().getTime(); // Reset timer on movement
       }
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
         moving = true;
+        this.lastActionTime = new Date().getTime(); // Reset timer on movement
         this.otherDirection = true;
-
       }
       if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
         jumpUp.play();
+        this.lastActionTime = new Date().getTime(); // Reset timer on jump
       }
       this.world.camera_x = -this.x + 100;
 
@@ -108,6 +112,9 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
+      const currentTime = new Date().getTime();
+      const idleDuration = currentTime - this.lastActionTime;
+
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fall();
@@ -116,14 +123,14 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
+      } else if (idleDuration > this.idleTimeLimit) {
+        this.playAnimation(this.IMAGE_WAITING);
+        sleep.play();
       } else {
-        this.playAnimation(this.IMAGE_WAITING)
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.IMAGES_WALKING);
         }
       }
     }, 150);
   }
-
-
 }
