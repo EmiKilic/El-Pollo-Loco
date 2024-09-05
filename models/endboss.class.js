@@ -1,10 +1,27 @@
+/**
+ * Represents the end boss enemy in the game.
+ * Extends the {@link MovableObject} class, inheriting movement-related functionality and image-based animations.
+ * The end boss has multiple states: alert, walking, attacking, hurt, and dead. It interacts with the player character and triggers specific behaviors when certain conditions are met.
+ * 
+ * @extends MovableObject
+ */
 class Endboss extends MovableObject {
+  /** @type {number} The height of the end boss (default is 450). */
   height = 450;
+
+  /** @type {number} The width of the end boss (default is 450). */
   width = 450;
+
+  /** @type {boolean} Indicates whether the game win sound has been played (default is false). */
   gameWinPlayed = false;
+
+  /** @type {boolean} Indicates whether the alert animation has been triggered (default is false). */
   alertTriggered = false;
+
+  /** @type {boolean} Indicates whether the end boss has started walking (default is false). */
   walkingStarted = false;
 
+  /** @type {string[]} Array of image paths for the alert animation. */
   IMAGES_ALERT = [
     "img/4_enemie_boss_chicken/2_alert/G5.png",
     "img/4_enemie_boss_chicken/2_alert/G6.png",
@@ -16,6 +33,7 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/2_alert/G12.png",
   ];
 
+  /** @type {string[]} Array of image paths for the walking animation. */
   IMAGES_WALKING = [
     "img/4_enemie_boss_chicken/1_walk/G1.png",
     "img/4_enemie_boss_chicken/1_walk/G2.png",
@@ -23,18 +41,21 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
 
+  /** @type {string[]} Array of image paths for the hurt animation. */
   IMAGES_HURT = [
     "img/4_enemie_boss_chicken/4_hurt/G21.png",
     "img/4_enemie_boss_chicken/4_hurt/G22.png",
     "img/4_enemie_boss_chicken/4_hurt/G23.png",
   ];
 
+  /** @type {string[]} Array of image paths for the dead animation. */
   IMAGES_DEAD = [
     "img/4_enemie_boss_chicken/5_dead/G24.png",
     "img/4_enemie_boss_chicken/5_dead/G25.png",
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
+  /** @type {string[]} Array of image paths for the attack animation. */
   IMAGES_ATTACK = [
     "img/4_enemie_boss_chicken/3_attack/G13.png",
     "img/4_enemie_boss_chicken/3_attack/G14.png",
@@ -45,26 +66,43 @@ class Endboss extends MovableObject {
     "img/4_enemie_boss_chicken/3_attack/G19.png",
     "img/4_enemie_boss_chicken/3_attack/G20.png",
   ];
+
+  /** @type {number} The index of the current image being displayed for the end boss. */
   currentImage = 0;
+
+  /** @type {boolean} Indicates whether the end boss's animation has started (default is false). */
   animationStarted = false;
 
+  /** @type {Object} Reference to the player character. */
+  player;
+
+  /**
+   * Creates a new Endboss instance, initializing its position, speed, and loading all images for various states.
+   * The player character is passed as an argument to enable interaction.
+   * 
+   * @param {Object} player - The player character that interacts with the end boss.
+   */
   constructor(player) {
-    // Add player as an argument
-    super().loadImage(this.IMAGES_ALERT[0]); // Start with the alert image
+    super().loadImage(this.IMAGES_ALERT[0]);  // Start with the alert image
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_ATTACK);
+
+    // Set the initial position and speed of the end boss
     this.x = 810 * 3;
     this.y = 20;
     this.speed = 2.5;
 
-    this.player = player; // Store player reference
+    this.player = player;  // Store the player reference
 
     this.animate();
   }
 
+  /**
+   * Plays the game win sound if it hasn't been played already, and pauses background sounds.
+   */
   playSound() {
     if (!this.gameWinPlayed) {
       soundEffects.gameWin.play();
@@ -75,6 +113,10 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Animates the end boss by checking its current state (dead, hurt, alert, walking, or attacking).
+   * Plays the appropriate animation and moves the end boss accordingly.
+   */
   animate() {
     setInterval(() => {
       if (this.isDeadEndboss()) {
@@ -95,11 +137,19 @@ class Endboss extends MovableObject {
     }, 200);
   }
 
+  /**
+   * Determines if the alert animation should be triggered based on the player's distance from the end boss.
+   * 
+   * @returns {boolean} Whether the alert animation should be triggered.
+   */
   shouldTriggerAlert() {
     const alertDistance = 620 * 3;
     return !this.alertTriggered && world.character.x >= alertDistance;
   }
 
+  /**
+   * Plays the alert animation for the end boss. Once the animation is complete, the walking animation starts.
+   */
   playAlertAnimation() {
     if (!this.alertTriggered) {
       this.alertTriggered = true;
@@ -111,6 +161,12 @@ class Endboss extends MovableObject {
     }
   }
 
+  /**
+   * Plays an animation sequence once, then optionally executes a callback function upon completion.
+   * 
+   * @param {string[]} images - An array of image paths to cycle through during the animation.
+   * @param {Function} [callback] - A function to call when the animation completes.
+   */
   playAnimationOnce(images, callback) {
     let i = 0;
     const interval = setInterval(() => {
