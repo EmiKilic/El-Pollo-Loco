@@ -33,11 +33,13 @@ function init() {
 }
 
 /**
- * Restarts the game by reloading the page.
+ * Restarts the game by resetting the game state and returning to the start screen.
  */
 function restartGame() {
-  location.reload();
+location.reload();
 }
+
+
 
 /**
  * Draws the start screen image onto the canvas.
@@ -131,3 +133,12 @@ function checkOrientation() {
 window.addEventListener("load", checkOrientation);
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
+
+function toggleImp() {
+  const impInfo = document.getElementById('impInfo');
+  impInfo.style.display = (impInfo.style.display === 'block') ? 'none' : 'block';
+}
+
+function closeImp() {
+  document.getElementById('impInfo').style.display == 'none';
+}

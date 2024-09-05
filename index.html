@@ -59,7 +59,7 @@
             <img src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="">
             <button onclick="restartGame()">restart</button>
         </div>
-             
+
         <div id="GameWin" style="display: none;" class="game-over">
             <img src="img/9_intro_outro_screens/win/win_2.png" alt="">
             <button onclick="restartGame()">restart</button>
@@ -69,6 +69,21 @@
     </div>
     <div id="rotateMessage">Bitte drehe das Gerät ins Querformat.</div>
 
+    <div class="impressum">
+        <h8 onclick="toggleImp()">Impressum</h8>
+    </div>
+    <div class="impressum-info" style="display: none;" id="impInfo">
+        <div class="close" onclick="toggleImp()">X</div>
+        <h2 id="m46">Diensteanbieter</h2>
+        <p>Emirhan Kilic</p>
+        <p>Musterstraße 1</p>
+        <p>12345 Musterstadt</p>
+
+        <h2 id="m56">Kontaktmöglichkeiten</h2>
+        <p>E-Mail-Adresse: <a href="mailto:muster@mail.de">muster@mail.de</a></p>
+
+
+    </div>
 </body>
 
 </html>
