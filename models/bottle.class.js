@@ -10,7 +10,7 @@ class Bottle extends MovableObject {
   height = 100;
   
   /** @type {number} The width of the bottle (default is 30). */
-  width = 30;
+  width = 100;
 
   /** 
    * @type {string[]} The array of image paths used for bottle animations.
@@ -27,14 +27,10 @@ class Bottle extends MovableObject {
    * It also starts the animation for bottle rotation.
    */
   constructor() {
-    super().loadImage(this.IMAGES_BOTTLE_PNG[0]);  // Load the initial bottle image
-    this.loadImages(this.IMAGES_BOTTLE_PNG);       // Load all images for the bottle rotation
-
-    // Randomize the bottle's position on the x and y axes
+    super().loadImage(this.IMAGES_BOTTLE_PNG[0]);
+    this.loadImages(this.IMAGES_BOTTLE_PNG);
     this.x = 200 + Math.random() * 500 * 4;
     this.y = 150 + Math.random() * 200;
-    
-    // Start the bottle animation
     this.animate();
   }
 
@@ -44,7 +40,7 @@ class Bottle extends MovableObject {
    */
   animate() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_BOTTLE_PNG);  // Play the animation by cycling through the images
+      this.playAnimation(this.IMAGES_BOTTLE_PNG);
     }, 150);
   }
 }

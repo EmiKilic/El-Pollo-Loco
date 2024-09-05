@@ -29,6 +29,8 @@ class MovableObject extends DrawableObject {
   /** @type {number} Timestamp of the last time the object was hit. */
   lastHit = 0;
 
+
+
   /**
    * Applies gravity to the object, continuously adjusting its vertical position.
    * This method is invoked in intervals, causing the object to fall if it's above the ground or if it's jumping.
@@ -91,6 +93,7 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+
   /**
    * Checks if the object is colliding with another movable object based on their position and dimensions.
    * 
@@ -99,10 +102,10 @@ class MovableObject extends DrawableObject {
    */
   isColliding(mo) {
     return (
-      this.x + this.width > mo.x &&
+      this.x + this.width - 20> mo.x &&
       this.y + this.height > mo.y &&
       this.x < mo.x + mo.width &&
-      this.y < mo.y + mo.height
+      this.y + 100 < mo.y + mo.height
     );
   }
 
@@ -114,10 +117,10 @@ class MovableObject extends DrawableObject {
    */
   isCollidingThrowableObject(mo) {
     return (
-      world.character.x - 80 + this.x + this.width > mo.x &&
-      world.character.y + this.y + this.height > mo.y + 160 &&
-      world.character.x - 80 + this.x < mo.x + mo.width &&
-      world.character.y + this.y < mo.y + mo.height
+      world.character.x  + this.x + this.width > mo.x + 150 &&
+      + this.y + this.height -50 > mo.y &&
+      world.character.x + this.x < mo.x + mo.width +50 &&
+      + this.y < mo.y + mo.height
     );
   }
 

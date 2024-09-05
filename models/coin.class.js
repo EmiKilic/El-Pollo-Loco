@@ -26,14 +26,10 @@ class Coin extends MovableObject {
    * Loads the coin images for animation and starts the animation cycle.
    */
   constructor() {
-    super().loadImage(this.IMAGES_COIN_PNG[0]);  // Load the initial coin image
-    this.loadImages(this.IMAGES_COIN_PNG);       // Load the images for the coin animation
-
-    // Randomize the coin's position on the x and y axes
+    super().loadImage(this.IMAGES_COIN_PNG[0]);
+    this.loadImages(this.IMAGES_COIN_PNG);
     this.x = 400 + Math.random() * 500 * 4;
     this.y = 150 + Math.random() * 200;
-
-    // Start the coin's animation
     this.animate();
   }
 
@@ -43,7 +39,7 @@ class Coin extends MovableObject {
    */
   animate() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_COIN_PNG);  // Cycle through coin images to create animation
+      this.playAnimation(this.IMAGES_COIN_PNG);
     }, 115);
   }
 }

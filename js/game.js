@@ -83,18 +83,6 @@ function muteSounds() {
 }
 
 /**
- * Toggles fullscreen mode on or off.
- */
-function toggleFullscreen() {
-  const elem = document.documentElement;
-  if (!document.fullscreenElement) {
-    elem.requestFullscreen?.() || elem.webkitRequestFullscreen?.() || elem.msRequestFullscreen?.();
-  } else {
-    document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.msExitFullscreen?.();
-  }
-}
-
-/**
  * Event listener for keyboard keydown events. Updates the `keyboard` object based on key presses.
  * @param {KeyboardEvent} e - The keydown event object.
  */

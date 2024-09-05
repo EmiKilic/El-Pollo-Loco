@@ -17,13 +17,9 @@ class Cloud extends MovableObject {
    * Loads the cloud image and starts the movement animation.
    */
   constructor() {
-    super().loadImage("img/5_background/layers/4_clouds/1.png");  // Load the cloud image
-
-    // Randomize the cloud's position on the x-axis
+    super().loadImage("img/5_background/layers/4_clouds/1.png");
     this.x = 0 + Math.random() * 500;
     this.width = 500;
-
-    // Start moving the cloud to the left
     this.animate();
   }
 
@@ -32,6 +28,6 @@ class Cloud extends MovableObject {
    * The cloud continuously moves to the left after creation.
    */
   animate() {
-    this.moveLeft();  // Inherited method that moves the cloud to the left
+    this.moveLeft();
   }
 }

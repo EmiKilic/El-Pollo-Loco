@@ -34,13 +34,13 @@ class ThrowableObject extends MovableObject {
     super().loadImage(
       "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png"
     );
-    this.loadImages(this.IMAGE_ROTATION);  // Load the images for the rotation animation
+    this.loadImages(this.IMAGE_ROTATION);
+    this.loadImages(this.IMAGE_SPLASH);
     this.x = x;
     this.y = y;
     this.height = 100;
-    this.width = 30;
+    this.width = 100;
 
-    // Start the throw
     this.throw();
   }
 
@@ -49,15 +49,13 @@ class ThrowableObject extends MovableObject {
    * The bottle also rotates as it moves, cycling through its rotation images.
    */
   throw() {
-    this.speedY = 30;  // Set the vertical speed for the throw
-    this.applyGravity();  // Apply gravity to the object
+    this.speedY = 30;
+    this.applyGravity();
 
-    // Move the object to the right every 25 milliseconds
     setInterval(() => {
       this.x += 10;
     }, 25);
 
-    // Play the rotation animation every 100 milliseconds
     setInterval(() => {
       this.playAnimation(this.IMAGE_ROTATION);
     }, 100);

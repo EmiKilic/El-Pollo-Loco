@@ -45,7 +45,7 @@ class DrawableObject {
     arr.forEach((path) => {
       let img = new Image();
       img.src = path;
-      this.imageCache[path] = img;  // Cache the image using its file path as the key
+      this.imageCache[path] = img;
     });
   }
 
@@ -55,7 +55,7 @@ class DrawableObject {
    * @param {CanvasRenderingContext2D} ctx - The 2D rendering context for the canvas.
    */
   draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  // Draw the image at the object's position
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   /**
@@ -67,9 +67,9 @@ class DrawableObject {
   drawFrame(ctx) {
     if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle || this instanceof ThrowableObject) {
       ctx.beginPath();
-      ctx.lineWidth = "5";
+      ctx.lineWidth = "0";
       ctx.strokeStyle = "red";
-      ctx.rect(this.x, this.y, this.width, this.height);  // Draw a rectangle around the object
+      ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
     }
   }

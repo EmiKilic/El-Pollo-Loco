@@ -5,16 +5,11 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    /* Ensure the body takes the full viewport height */
     background-image: url("img/background.png");
     background-size: cover;
-    /* Ensure the background covers the entire area */
     background-position: center;
-    /* Center the background image */
     background-repeat: no-repeat;
-    /* Prevent background repetition */
     background-attachment: fixed;
-    /* Keep the background in place even when scrolling */
     font-family: 'Zabars', Arial, Helvetica, sans-serif;
 }
 
@@ -22,7 +17,6 @@ body {
 @font-face {
     font-family: 'Zabars';
     src: url('fonts/Zabars.ttf') format('truetype');
-    /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
 canvas {
@@ -31,7 +25,6 @@ canvas {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: block;
     width: 100%;
-    /* Make canvas responsive */
     height: auto;
 }
 
@@ -53,9 +46,7 @@ h1 {
     position: relative;
     display: inline-block;
     width: 100%;
-    /* Ensure the container takes full width */
     max-width: 720px;
-    /* Limit the max width to your canvas size */
     height: auto;
 }
 
@@ -75,7 +66,7 @@ h1 {
 .icons {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -99,7 +90,6 @@ h1 {
 
 .popup {
     display: none;
-    /* Popup ist standardmäßig versteckt */
     position: absolute;
     height: 480px;
     width: 720px;
@@ -124,22 +114,47 @@ h1 {
     img {
         height: 490px;
         width: 730px;
+        position: absolute;
     }
+
+    button {
+        cursor: pointer;
+        z-index: 99999;
+        left: 45%;
+        top: 47%;
+        position: absolute;
+        background: #531A82;
+        border: 3px solid white;
+        border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+        box-sizing: border-box;
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 16px;
+        min-height: 40px;
+        text-align: center;
+        text-rendering: geometricprecision;
+        text-transform: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+    }
+
 }
 
 .mobile {
     position: absolute;
-    /* Position relative to the canvas container */
     bottom: 10px;
-    /* Adjust as needed */
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
-    /* Take the full width of the canvas */
     display: flex;
     justify-content: space-between;
     z-index: 10;
-    /* Ensure the mobile buttons are on top of the canvas */
     display: none;
 
     img {

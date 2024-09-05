@@ -65,7 +65,7 @@ class World {
 
     setInterval(() => {
       this.checkThrowObjects();
-    }, 300);
+    }, 200);
   }
 
   /**
@@ -105,22 +105,22 @@ class World {
   checkBottomTopCollision() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.isDead()) {
-        if (this.character.isBottomCollidingWithTop(enemy)) {
+        if (
+          this.character.isBottomCollidingWithTop(enemy) &&
+          this.character.speedY < 0           
+        ) {
           this.character.jump();
           enemy.hitEndboss();
           soundEffects.chickenDead.play();
           setInterval(() => {
             enemy.fall();
           }, 50);
-          setTimeout(() => {
-            let position = this.level.enemies.indexOf(enemy);
-            this.level.enemies.splice(position, 0);
-          }, 1000);
         }
       }
     });
+    let previousY = this.character.y;
   }
-
+  
   /**
    * Checks for collisions between throwable objects (such as bottles) and enemies.
    * When a throwable object hits an enemy, the enemy is defeated.
@@ -131,12 +131,12 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             soundEffects.shatter.play();
+            soundEffects.chickenDead.play();
             this.object.splice(object);
             enemy.died();
-            setTimeout(() => {
-              let position = this.level.enemies.indexOf(enemy);
-              this.level.enemies.splice(position, 1);
-            }, 1000 / 60);
+            setInterval(() => {
+              enemy.fall();
+            }, 50);
           }
         }
       });

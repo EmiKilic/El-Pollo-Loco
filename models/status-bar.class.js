@@ -160,13 +160,8 @@ class StatusBar extends DrawableObject {
    * @param {CanvasRenderingContext2D} ctx - The 2D rendering context for the canvas.
    */
   draw(ctx) {
-    // Drawing the bottle status bar
     ctx.drawImage(this.imgBottle, 30, 0, 200, 60);
-
-    // Drawing the health status bar
     ctx.drawImage(this.imgLife, 30, 40, 200, 60);
-
-    // Drawing the coin status bar
     ctx.drawImage(this.imgCoin, 30, 80, 200, 60);
   }
 }

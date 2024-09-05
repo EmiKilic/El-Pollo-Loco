@@ -30,16 +30,12 @@ class Chicken extends MovableObject {
    * Loads the images for walking and dead states, and starts the chicken's animation.
    */
   constructor() {
-    super().loadImage(this.IMAGES_WALKING[0]);  // Load the initial walking image
-    this.loadImages(this.IMAGES_WALKING);       // Load all walking images
-    this.loadImages(this.IMAGES_DEAD);          // Load the dead image
-
-    // Randomize the chicken's position and speed
+    super().loadImage(this.IMAGES_WALKING[0]);
+    this.loadImages(this.IMAGES_WALKING);
+    this.loadImages(this.IMAGES_DEAD);
     this.x = 500 + Math.random() * 2000;
     this.speed = 0.15 + Math.random() * 0.25;
-    
-    // Start the chicken's animation
-    this.animate();
+        this.animate();
   }
 
   /**
@@ -49,17 +45,14 @@ class Chicken extends MovableObject {
    * - The walking or dead animation is played depending on the chicken's state.
    */
   animate() {
-    // Toggle the direction every 5 seconds
     setInterval(() => (this.otherDirection = !this.otherDirection), 5000);
     
-    // Move the chicken depending on the direction and state
     setInterval(() => {
       if (!this.isDeadEndboss()) {
         this.otherDirection ? this.moveRight() : this.moveLeft();
       }
     }, 1000 / 60);
 
-    // Play the appropriate animation (walking or dead) every 200ms
     setInterval(
       () => this.playAnimation(this.isDeadEndboss() ? this.IMAGES_DEAD : this.IMAGES_WALKING),
       200

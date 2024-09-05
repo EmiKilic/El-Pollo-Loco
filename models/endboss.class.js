@@ -83,19 +83,18 @@ class Endboss extends MovableObject {
    * @param {Object} player - The player character that interacts with the end boss.
    */
   constructor(player) {
-    super().loadImage(this.IMAGES_ALERT[0]);  // Start with the alert image
+    super().loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_ATTACK);
 
-    // Set the initial position and speed of the end boss
     this.x = 810 * 3;
     this.y = 20;
-    this.speed = 2.5;
+    this.speed = 20;
 
-    this.player = player;  // Store the player reference
+    this.player = player;
 
     this.animate();
   }

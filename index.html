@@ -36,7 +36,6 @@
             <div class="icons">
                 <img class="icon-corner" src="img/10.Buttons/settings.png" alt="" onclick="toggleSettings()">
                 <img class="icon-corner" id="audioEmblem" src="img/10.Buttons/Audio.png" alt="" onclick="muteSounds()">
-                <img class="icon-corner" src="img/10.Buttons/FullScreen.png" alt="" onclick="toggleFullscreen()">
             </div>
 
             <div class="mobile">
@@ -57,11 +56,13 @@
         </div>
 
         <div id="GameOver" style="display: none;" class="game-over">
-            <img src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="" onclick="restartGame()">
+            <img src="img/9_intro_outro_screens/game_over/oh no you lost!.png" alt="">
+            <button onclick="restartGame()">restart</button>
         </div>
              
         <div id="GameWin" style="display: none;" class="game-over">
-            <img src="img/9_intro_outro_screens/win/win_2.png" alt="" onclick="restartGame()">
+            <img src="img/9_intro_outro_screens/win/win_2.png" alt="">
+            <button onclick="restartGame()">restart</button>
         </div>
 
 

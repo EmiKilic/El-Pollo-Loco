@@ -2,19 +2,19 @@
  * Represents the main character in the game.
  * Extends the {@link MovableObject} class, inheriting movement-related functionality such as walking, jumping, and gravity application.
  * The character can walk, jump, be hurt, die, and animate various states like idle or sleeping.
- * 
+ *
  * @extends MovableObject
  */
 class Character extends MovableObject {
   /** @type {number} The height of the character (default is 250). */
   height = 250;
-  
+
   /** @type {number} The width of the character (default is 100). */
   width = 100;
 
   /** @type {number} The y-coordinate of the character (default is 0). */
   y = 0;
-  
+
   /** @type {number} The x-coordinate of the character (default is 0). */
   x = 0;
 
@@ -35,7 +35,7 @@ class Character extends MovableObject {
 
   /** @type {Object} Reference to the world object, which includes game mechanics like the camera and keyboard inputs. */
   world;
-
+  
   /** @type {string[]} Array of image paths for the character's walking animation. */
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -91,6 +91,19 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
 
+  IMAGE_IDLE = [
+    "img/2_character_pepe/1_idle/idle/I-1.png",
+    "img/2_character_pepe/1_idle/idle/I-2.png",
+    "img/2_character_pepe/1_idle/idle/I-3.png",
+    "img/2_character_pepe/1_idle/idle/I-4.png",
+    "img/2_character_pepe/1_idle/idle/I-5.png",
+    "img/2_character_pepe/1_idle/idle/I-6.png",
+    "img/2_character_pepe/1_idle/idle/I-7.png",
+    "img/2_character_pepe/1_idle/idle/I-8.png",
+    "img/2_character_pepe/1_idle/idle/I-9.png",
+    "img/2_character_pepe/1_idle/idle/I-10.png",
+  ];
+
   /**
    * Creates a new Character instance, loading images for various states (walking, jumping, hurt, dead, waiting).
    * It also starts the character's animation and applies gravity.
@@ -103,6 +116,7 @@ class Character extends MovableObject {
       this.IMAGES_DEAD,
       this.IMAGES_HURT,
       this.IMAGE_WAITING,
+      this.IMAGE_IDLE,
     ].forEach((imgs) => this.loadImages(imgs));
     this.animate();
     this.applyGravity();
@@ -127,7 +141,10 @@ class Character extends MovableObject {
   animate() {
     setInterval(() => {
       let moving = false;
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x * 4) {
+      if (
+        this.world.keyboard.RIGHT &&
+        this.x < this.world.level.level_end_x * 4
+      ) {
         this.moveRight();
         moving = true;
       }
@@ -163,6 +180,8 @@ class Character extends MovableObject {
         soundEffects.sleep.play();
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
+      } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT) {
+        this.playAnimation(this.IMAGE_IDLE);
       }
     }, 150);
   }
