@@ -67,11 +67,11 @@ class Endboss extends MovableObject {
 
   playSound() {
     if (!this.gameWinPlayed) {
-      gameWin.play();
+      soundEffects.gameWin.play();
       this.gameWinPlayed = true;
       gameStarted = false;
-      sound.pause();
-      bossSpawn.pause();
+      soundEffects.sound.pause();
+      soundEffects.bossSpawn.pause();
     }
   }
 
@@ -96,15 +96,15 @@ class Endboss extends MovableObject {
   }
 
   shouldTriggerAlert() {
-    const alertDistance = 700 * 3;
+    const alertDistance = 620 * 3;
     return !this.alertTriggered && world.character.x >= alertDistance;
   }
 
   playAlertAnimation() {
     if (!this.alertTriggered) {
-      this.alertTriggered = true; 
-      bossSpawn.play();
-      bossSpawn.loop = true;
+      this.alertTriggered = true;
+      soundEffects.bossSpawn.play();
+      soundEffects.bossSpawn.loop = true;
       this.playAnimationOnce(this.IMAGES_ALERT, () => {
         this.walkingStarted = true;
       });
@@ -117,7 +117,7 @@ class Endboss extends MovableObject {
       this.loadImage(images[i]);
       i++;
       if (i >= images.length) {
-        clearInterval(interval); 
+        clearInterval(interval);
         if (callback) callback();
       }
     }, 200);

@@ -8,7 +8,6 @@ class MovableObject extends DrawableObject {
   bottle = 0;
   lastHit = 0;
 
-
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -103,8 +102,6 @@ class MovableObject extends DrawableObject {
   hitBottle() {
     if (this.bottle < 5) {
       this.bottle += 1;
-      console.log(this.bottle);
-
       if (this.bottle > 5) {
         this.bottle = 5;
       }
@@ -136,5 +133,4 @@ class MovableObject extends DrawableObject {
   fallEndboss() {
     this.y += 20;
   }
-
 }

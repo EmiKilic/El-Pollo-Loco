@@ -4,10 +4,11 @@ class Character extends MovableObject {
   y = 0;
   x = 0;
   speed = 10;
-
   gameLoosePlayed = false;
   lastActionTime = new Date().getTime();
-  idleTimeLimit = 15000; 
+  idleTimeLimit = 10000;
+  isWalking = false;
+  world;
 
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -58,24 +59,23 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/long_idle/I-19.png",
     "img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
-  world;
-  isWalking = false;
 
   constructor() {
-    super().loadImage("img/2_character_pepe/2_walk/W-21.png");
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_JUMPING);
-    this.loadImages(this.IMAGES_DEAD);
-    this.loadImages(this.IMAGES_HURT);
-    this.loadImages(this.IMAGE_WAITING);
-
+    super().loadImage(this.IMAGES_WALKING[0]);
+    [
+      this.IMAGES_WALKING,
+      this.IMAGES_JUMPING,
+      this.IMAGES_DEAD,
+      this.IMAGES_HURT,
+      this.IMAGE_WAITING,
+    ].forEach((imgs) => this.loadImages(imgs));
     this.animate();
     this.applyGravity();
   }
 
   playSound() {
     if (!this.gameLoosePlayed) {
-      loose.play();
+      soundEffects.loose.play();
       this.gameLoosePlayed = true;
       gameStarted = false;
     }
@@ -84,53 +84,32 @@ class Character extends MovableObject {
   animate() {
     setInterval(() => {
       let moving = false;
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x * 4) {
-        this.moveRight();
-        moving = true;
-        this.lastActionTime = new Date().getTime(); // Reset timer on movement
-      }
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        moving = true;
-        this.lastActionTime = new Date().getTime(); // Reset timer on movement
-        this.otherDirection = true;
-      }
-      if (this.world.keyboard.UP && !this.isAboveGround()) {
-        this.jump();
-        jumpUp.play();
-        this.lastActionTime = new Date().getTime(); // Reset timer on jump
-      }
+      if (
+        this.world.keyboard.RIGHT &&
+        this.x < this.world.level.level_end_x * 4
+      )
+        this.moveRight(), (moving = true);
+      if (this.world.keyboard.LEFT && this.x > 0)
+        this.moveLeft(), (moving = true), (this.otherDirection = true);
+      if (this.world.keyboard.UP && !this.isAboveGround())
+        this.jump(), soundEffects.jumpUp.play();
       this.world.camera_x = -this.x + 100;
-
-      if (moving && !this.isWalking) {
-        walking_sound.play();
-        this.isWalking = true;
-      } else if (!moving && this.isWalking) {
-        walking_sound.pause();
-        this.isWalking = false;
-      }
+      if (moving !== this.isWalking)
+        moving ? soundEffects.walking.play() : soundEffects.walking.pause(),
+          (this.isWalking = moving);
+      if (moving) this.lastActionTime = new Date().getTime();
     }, 1000 / 60);
 
     setInterval(() => {
-      const currentTime = new Date().getTime();
-      const idleDuration = currentTime - this.lastActionTime;
-
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-        this.fall();
-        this.playSound();
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
-      } else if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else if (idleDuration > this.idleTimeLimit) {
-        this.playAnimation(this.IMAGE_WAITING);
-        sleep.play();
-      } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        }
-      }
+      const idleDuration = new Date().getTime() - this.lastActionTime;
+      if (this.isDead())
+        this.playAnimation(this.IMAGES_DEAD), this.fall(), this.playSound();
+      else if (this.isHurt()) this.playAnimation(this.IMAGES_HURT);
+      else if (this.isAboveGround()) this.playAnimation(this.IMAGES_JUMPING);
+      else if (idleDuration > this.idleTimeLimit)
+        this.playAnimation(this.IMAGE_WAITING), soundEffects.sleep.play();
+      else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
+        this.playAnimation(this.IMAGES_WALKING);
     }, 150);
   }
 }
