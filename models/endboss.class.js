@@ -1,7 +1,6 @@
 class Endboss extends MovableObject {
   height = 450;
   width = 450;
-  gameWin = new Audio("audio/win.mp3");
   gameWinPlayed = false;
   alertTriggered = false;
   walkingStarted = false;
@@ -68,9 +67,10 @@ class Endboss extends MovableObject {
 
   playSound() {
     if (!this.gameWinPlayed) {
-      this.gameWin.play();
+      gameWin.play();
       this.gameWinPlayed = true;
       gameStarted = false;
+      sound.pause();
     }
   }
 
@@ -102,6 +102,8 @@ class Endboss extends MovableObject {
   playAlertAnimation() {
     if (!this.alertTriggered) {
       this.alertTriggered = true; 
+      bossSpawn.play();
+      bossSpawn.loop = true;
       this.playAnimationOnce(this.IMAGES_ALERT, () => {
         this.walkingStarted = true;
       });

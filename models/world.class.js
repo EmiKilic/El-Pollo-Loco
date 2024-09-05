@@ -6,11 +6,6 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
-  coinSound = new Audio("audio/collect_coin.mp3");
-  bottleSound = new Audio("audio/toxin.mp3");
-  chickenDead = new Audio("audio/chickenDead.mp3");
-  shatter = new Audio("audio/bottleShatter.mp3");
-  damage = new Audio("audio/damage.mp3");
   object = [];
 
   constructor(canvas, keyboard) {
@@ -33,7 +28,7 @@ class World {
           this.statusBar.showCoin(this.character.money);
           console.log(this.character.money);
           this.level.coin.splice(index, 1);
-          this.coinSound.play();
+          coinSound.play();
         }
       });
       this.level.bottle.forEach((bottle, index) => {
@@ -42,7 +37,7 @@ class World {
           this.statusBar.showBottle(this.character.bottle);
           console.log(this.character.bottle);
           this.level.bottle.splice(index, 1);
-          this.bottleSound.play();
+          bottleSound.play();
         }
       });
     }, 1000 / 60);
@@ -65,7 +60,7 @@ class World {
           console.log("Character's bottom collided with the top of an enemy.");
           this.character.jump();
           enemy.hitEndboss();
-          this.chickenDead.play();
+          chickenDead.play();
           setInterval(() => {
             enemy.fall();
           }, 50);
@@ -84,7 +79,7 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
-            this.shatter.play();
+            shatter.play();
             this.object.splice(object);
             enemy.died();
             setTimeout(() => {
@@ -103,8 +98,8 @@ class World {
         if (!enemy.isDead()) {
           if (object.isCollidingThrowableObject(enemy)) {
             console.log("Enemy Hit");
-            this.shatter.play();
-            this.chickenDead.play();
+            shatter.play();
+            chickenDead.play();
             this.object.splice(object, 1);
             enemy.hitEndboss();
           }
@@ -137,7 +132,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
-        this.damage.play();
+        damage.play();
         this.statusBar.setPercentage(this.character.energy);
         console.log("Collision with Character", this.character.energy);
       }
@@ -147,7 +142,7 @@ class World {
     this.level.endboss.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         this.character.hit();
-        this.damage.play();
+        damage.play();
         this.statusBar.setPercentage(this.character.energy);
         console.log("Collision with Character", this.character.energy);
       }
@@ -219,6 +214,9 @@ class World {
     const over = document.getElementById("GameOver");
     if (this.character.energy == 0) {
       over.style.display = "block";
+      gameStarted = false;
+      sound.pause();
+      damage.pause();
     } else {
       over.style.display = "none";
     }

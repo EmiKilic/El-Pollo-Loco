@@ -4,8 +4,7 @@ class Character extends MovableObject {
   y = 0;
   x = 0;
   speed = 10;
-  jumpUp = new Audio('audio/jump.mp3');
-  loose = new Audio('audio/loose.mp3');
+
   gameLoosePlayed = false;
 
   IMAGES_WALKING = [
@@ -58,7 +57,6 @@ class Character extends MovableObject {
     "img/2_character_pepe/1_idle/long_idle/I-20.png",
   ];
   world;
-  walking_sound = new Audio("audio/walking.mp3");
   isWalking = false;
 
   constructor() {
@@ -75,7 +73,7 @@ class Character extends MovableObject {
 
   playSound() {
     if (!this.gameLoosePlayed) {
-      this.loose.play();
+      loose.play();
       this.gameLoosePlayed = true;
       gameStarted = false;
     }
@@ -96,15 +94,15 @@ class Character extends MovableObject {
       }
       if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
-        this.jumpUp.play();
+        jumpUp.play();
       }
       this.world.camera_x = -this.x + 100;
 
       if (moving && !this.isWalking) {
-        this.walking_sound.play();
+        walking_sound.play();
         this.isWalking = true;
       } else if (!moving && this.isWalking) {
-        this.walking_sound.pause();
+        walking_sound.pause();
         this.isWalking = false;
       }
     }, 1000 / 60);

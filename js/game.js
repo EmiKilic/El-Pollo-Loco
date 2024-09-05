@@ -2,6 +2,17 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
+let damage = new Audio("audio/damage.mp3");
+let sound = new Audio("audio/backgroundmusic.mp3");
+let coinSound = new Audio("audio/collect_coin.mp3");
+let bottleSound = new Audio("audio/toxin.mp3");
+let chickenDead = new Audio("audio/chickenDead.mp3");
+let shatter = new Audio("audio/bottleShatter.mp3");
+let gameWin = new Audio('audio/win.mp3');
+let jumpUp = new Audio('audio/jump.mp3');
+let loose = new Audio('audio/loose.mp3');
+let walking_sound = new Audio("audio/walking.mp3");
+let bossSpawn = new Audio('audio/bossSpawn.mp3');
 let gameStarted = false;
 
 function init() {
@@ -35,7 +46,10 @@ function startGame() {
   document.getElementById("startButton").style.display = "none";
 
   gameStarted = true;
-
+  if (gameStarted) {
+    sound.play();
+    sound.loop = true;
+  }
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   world = new World(canvas, keyboard);
@@ -56,8 +70,32 @@ function muteSounds() {
 
   if (audioIcon.src.includes("Audio.png")) {
     audioIcon.src = "img/10.Buttons/Stumm.png";
+    sound.pause();
+    damage.muted = true;
+    coinSound.muted = true;
+    bottleSound.muted = true;
+    chickenDead.muted = true;
+    shatter.muted = true;
+    gameStarted.muted = true;
+    gameWin.muted = true;
+    walking_sound.muted = true;
+    loose.muted = true
+    jumpUp.muted = true;
+    bossSpawn.muted = true;
   } else {
     audioIcon.src = "img/10.Buttons/Audio.png";
+    sound.play();
+    damage.muted = false;
+    coinSound.muted = false;
+    bottleSound.muted = false;
+    chickenDead.muted = false;
+    shatter.muted = false;
+    gameStarted.muted = false;
+    gameWin.muted = false;
+    walking_sound.muted = false;
+    loose.muted = false
+    jumpUp.muted = false;
+    bossSpawn.muted = false;
   }
 }
 
