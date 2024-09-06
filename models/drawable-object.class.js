@@ -68,7 +68,7 @@ class DrawableObject {
     if (this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Coin || this instanceof Bottle || this instanceof ThrowableObject) {
       ctx.beginPath();
       ctx.lineWidth = "0";
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "rgba(1, 1, 1, 0)";
       ctx.rect(this.x, this.y, this.width, this.height);
       ctx.stroke();
     }

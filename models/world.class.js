@@ -27,9 +27,11 @@ class World {
   /** @type {ThrowableObject[]} Array of throwable objects, such as bottles, that can be thrown by the player. */
   object = [];
 
+  isGameOver = false;
+
   /**
    * Creates a new instance of the game world, setting up the canvas, keyboard inputs, and running the game loop.
-   * 
+   *
    * @param {HTMLCanvasElement} canvas - The canvas element for rendering the game.
    * @param {Keyboard} keyboard - The current state of keyboard inputs.
    */
@@ -40,6 +42,30 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+  }
+
+  /**
+   * The main draw loop for the game. It clears the canvas, draws all game elements (character, enemies, objects, etc.), and updates the screen.
+   */
+  draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.level.backgroundObjects);
+    this.addObjectsToMap(this.level.clouds);
+    this.addToMap(this.character);
+    this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.level.coin);
+    this.addObjectsToMap(this.level.bottle);
+    this.addObjectsToMap(this.level.endboss);
+    this.ctx.translate(-this.camera_x, 0);
+    this.addToMap(this.statusBar);
+    this.ctx.translate(this.camera_x, 0);
+    this.addObjectsToMap(this.object);
+    this.ctx.translate(-this.camera_x, 0);
+    let self = this;
+    requestAnimationFrame(function () {
+      self.draw();
+    });
   }
 
   /**
@@ -107,7 +133,7 @@ class World {
       if (!enemy.isDead()) {
         if (
           this.character.isBottomCollidingWithTop(enemy) &&
-          this.character.speedY < 0           
+          this.character.speedY < 0
         ) {
           this.character.jump();
           enemy.hitEndboss();
@@ -120,7 +146,7 @@ class World {
     });
     let previousY = this.character.y;
   }
-  
+
   /**
    * Checks for collisions between throwable objects (such as bottles) and enemies.
    * When a throwable object hits an enemy, the enemy is defeated.
@@ -171,14 +197,12 @@ class World {
       this.character.bottle > 0 &&
       this.character.otherDirection == false
     ) {
-      let bottle = new ThrowableObject(
-        this.character.x + this.camera_x,
-        this.character.y
-      );
+      let bottle = new ThrowableObject(this.character.x, this.character.y);
       this.object.push(bottle);
       this.character.bottle--;
       this.statusBar.bottle--;
       this.statusBar.showBottle(this.statusBar.bottle);
+      console.log(this.character.x);
     }
   }
 
@@ -216,32 +240,8 @@ class World {
   }
 
   /**
-   * The main draw loop for the game. It clears the canvas, draws all game elements (character, enemies, objects, etc.), and updates the screen.
-   */
-  draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.clouds);
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.level.enemies);
-    this.addObjectsToMap(this.level.coin);
-    this.addObjectsToMap(this.level.bottle);
-    this.addObjectsToMap(this.level.endboss);
-    this.ctx.translate(-this.camera_x, 0);
-    this.addObjectsToMap(this.object);
-    this.addToMap(this.statusBar);
-    this.ctx.translate(this.camera_x, 0);
-    this.ctx.translate(-this.camera_x, 0);
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
-  }
-
-  /**
    * Adds an array of objects to the canvas.
-   * 
+   *
    * @param {MovableObject[]} objects - The array of objects to be drawn.
    */
   addObjectsToMap(objects) {
@@ -252,7 +252,7 @@ class World {
 
   /**
    * Adds a single movable object to the canvas, flipping the image if necessary.
-   * 
+   *
    * @param {MovableObject} mo - The movable object to be drawn.
    */
   addToMap(mo) {
@@ -268,7 +268,7 @@ class World {
 
   /**
    * Flips the object's image horizontally before drawing it.
-   * 
+   *
    * @param {MovableObject} mo - The movable object to be flipped.
    */
   flipImage(mo) {
@@ -280,7 +280,7 @@ class World {
 
   /**
    * Reverses the horizontal flip after drawing the object.
-   * 
+   *
    * @param {MovableObject} mo - The movable object to be flipped back.
    */
   flipImageBack(mo) {
@@ -292,12 +292,15 @@ class World {
    * Checks if the game is over and displays the Game Over screen if the character has no energy left.
    */
   GameOver() {
+    console.log(this.character.energy);
+    
     const over = document.getElementById("GameOver");
-    if (this.character.energy == 0) {
+    if (this.character.energy == 0 && !this.isGameOver) {
       over.style.display = "block";
       gameStarted = false;
       soundEffects.sound.pause();
       soundEffects.damage.pause();
+      
     } else {
       over.style.display = "none";
     }

@@ -117,9 +117,9 @@ class MovableObject extends DrawableObject {
    */
   isCollidingThrowableObject(mo) {
     return (
-      world.character.x  + this.x + this.width > mo.x + 150 &&
-      + this.y + this.height -50 > mo.y &&
-      world.character.x + this.x < mo.x + mo.width +50 &&
+      this.x + this.width > mo.x &&
+      + this.y + this.height> mo.y &&
+      this.x < mo.x + mo.width -50 &&
       + this.y < mo.y + mo.height
     );
   }
@@ -134,8 +134,8 @@ class MovableObject extends DrawableObject {
     return (
       this.x + this.width > mo.x &&
       this.x < mo.x + mo.width &&
-      this.y + this.height + 13 >= mo.y &&
-      this.y + this.height + 13 <= mo.y + mo.height
+      this.y + this.height -12 >= mo.y &&
+      this.y + this.height -12 <= mo.y + mo.height
     );
   }
 

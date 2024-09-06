@@ -1,7 +1,7 @@
 /**
  * Global variables and game state.
  */
-let canvas, ctx, world, gameStarted = false;
+let canvas, character, ctx, world, gameStarted = false;
 let keyboard = new Keyboard();
 
 /**
@@ -32,15 +32,29 @@ function init() {
   drawStartScreen();
 }
 
-/**
- * Restarts the game by resetting the game state and returning to the start screen.
- */
-function restartGame() {
-location.reload();
+  /**
+   * Restarts the game by resetting the game state and returning to the start screen.
+   */
+  function restartGame() {
+    // Stop all sounds
+    Object.values(soundEffects).forEach(sound => sound.pause());
+
+    // Clear the world and canvas
+    world = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Reinitialize the world and level
+    initLevel();
+    world = new World(canvas, keyboard);
+
+    world.character.energy = 100;  // Reset the energy to full
+    world.character.lastHit = 0; 
+
+    // Hide the GameOver screen and reset flags
+    gameStarted = true;
+    isGameOver = false;
+    startGame();
 }
-
-
-
 /**
  * Draws the start screen image onto the canvas.
  */
