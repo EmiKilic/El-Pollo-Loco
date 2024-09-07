@@ -1,7 +1,11 @@
 /**
  * Global variables and game state.
  */
-let canvas, character, ctx, world, gameStarted = false;
+let canvas,
+  character,
+  ctx,
+  world,
+  gameStarted = false;
 let keyboard = new Keyboard();
 
 /**
@@ -20,7 +24,7 @@ let soundEffects = {
   loose: new Audio("audio/loose.mp3"),
   walking: new Audio("audio/walking.mp3"),
   bossSpawn: new Audio("audio/bossSpawn.mp3"),
-  sleep: new Audio("audio/sleep.mp3")
+  sleep: new Audio("audio/sleep.mp3"),
 };
 
 /**
@@ -32,28 +36,32 @@ function init() {
   drawStartScreen();
 }
 
-  /**
-   * Restarts the game by resetting the game state and returning to the start screen.
-   */
-  function restartGame() {
-    // Stop all sounds
-    Object.values(soundEffects).forEach(sound => sound.pause());
+/**
+ * Restarts the game by resetting the game state and returning to the start screen.
+ */
+function restartGame() {
+  Object.values(soundEffects).forEach((sound) => sound.pause());
 
-    // Clear the world and canvas
-    world = null;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById("GameWin").style.display = "none";
 
-    // Reinitialize the world and level
-    initLevel();
-    world = new World(canvas, keyboard);
 
-    world.character.energy = 100;  // Reset the energy to full
-    world.character.lastHit = 0; 
+  if (world) {
+    world.clearIntervals();
+    world.level.endboss.forEach(endboss => endboss.clearIntervals());
+  }
 
-    // Hide the GameOver screen and reset flags
-    gameStarted = true;
-    isGameOver = false;
-    startGame();
+  world = null;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  initLevel();
+  world = new World(canvas, keyboard);
+
+  world.character.energy = 100;
+  world.character.lastHit = 0;
+
+  gameStarted = true;
+  isGameOver = false;
+  startGame();
 }
 /**
  * Draws the start screen image onto the canvas.
@@ -61,7 +69,8 @@ function init() {
 function drawStartScreen() {
   const startImage = new Image();
   startImage.src = "img/9_intro_outro_screens/start/startscreen_1.png";
-  startImage.onload = () => ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
+  startImage.onload = () =>
+    ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
 }
 
 /**
@@ -72,7 +81,7 @@ function startGame() {
   if (gameStarted) return;
   initLevel();
   document.getElementById("startButton").style.display = "none";
-  soundEffects.sound.play(); 
+  soundEffects.sound.play();
   soundEffects.sound.loop = true;
   gameStarted = true;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -84,7 +93,7 @@ function startGame() {
  */
 function toggleSettings() {
   const popup = document.getElementById("settingsPopup");
-  popup.style.display = (popup.style.display === "block") ? "none" : "block";
+  popup.style.display = popup.style.display === "block" ? "none" : "block";
 }
 
 /**
@@ -93,8 +102,10 @@ function toggleSettings() {
 function muteSounds() {
   const audioIcon = document.getElementById("audioEmblem");
   const isMuted = audioIcon.src.includes("Audio.png");
-  audioIcon.src = isMuted ? "img/10.Buttons/Stumm.png" : "img/10.Buttons/Audio.png";
-  Object.values(soundEffects).forEach(sound => sound.muted = isMuted);
+  audioIcon.src = isMuted
+    ? "img/10.Buttons/Stumm.png"
+    : "img/10.Buttons/Audio.png";
+  Object.values(soundEffects).forEach((sound) => (sound.muted = isMuted));
   if (!isMuted) soundEffects.sound.play();
 }
 
@@ -128,9 +139,19 @@ window.addEventListener("keyup", (e) => {
  * Sets up touch event listeners for mobile controls.
  */
 document.addEventListener("DOMContentLoaded", function () {
-  ["btnLeft", "btnRight", "btnUp", "btnSpace"].forEach(id => {
-    document.getElementById(id).addEventListener("touchstart", () => keyboard[id.replace('btn', '').toUpperCase()] = true);
-    document.getElementById(id).addEventListener("touchend", () => keyboard[id.replace('btn', '').toUpperCase()] = false);
+  ["btnLeft", "btnRight", "btnUp", "btnSpace"].forEach((id) => {
+    document
+      .getElementById(id)
+      .addEventListener(
+        "touchstart",
+        () => (keyboard[id.replace("btn", "").toUpperCase()] = true)
+      );
+    document
+      .getElementById(id)
+      .addEventListener(
+        "touchend",
+        () => (keyboard[id.replace("btn", "").toUpperCase()] = false)
+      );
   });
 });
 
@@ -138,7 +159,8 @@ document.addEventListener("DOMContentLoaded", function () {
  * Checks if the screen orientation is landscape and displays a rotate message if needed.
  */
 function checkOrientation() {
-  document.getElementById("rotateMessage").style.display = window.innerHeight > window.innerWidth ? "block" : "none";
+  document.getElementById("rotateMessage").style.display =
+    window.innerHeight > window.innerWidth ? "block" : "none";
 }
 
 /**
@@ -149,10 +171,10 @@ window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
 function toggleImp() {
-  const impInfo = document.getElementById('impInfo');
-  impInfo.style.display = (impInfo.style.display === 'block') ? 'none' : 'block';
+  const impInfo = document.getElementById("impInfo");
+  impInfo.style.display = impInfo.style.display === "block" ? "none" : "block";
 }
 
 function closeImp() {
-  document.getElementById('impInfo').style.display == 'none';
+  document.getElementById("impInfo").style.display == "none";
 }

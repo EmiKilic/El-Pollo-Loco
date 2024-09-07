@@ -2,7 +2,7 @@
  * Represents the end boss enemy in the game.
  * Extends the {@link MovableObject} class, inheriting movement-related functionality and image-based animations.
  * The end boss has multiple states: alert, walking, attacking, hurt, and dead. It interacts with the player character and triggers specific behaviors when certain conditions are met.
- * 
+ *
  * @extends MovableObject
  */
 class Endboss extends MovableObject {
@@ -20,6 +20,9 @@ class Endboss extends MovableObject {
 
   /** @type {boolean} Indicates whether the end boss has started walking (default is false). */
   walkingStarted = false;
+
+  /** @type {number[]} Array to store interval IDs */
+  intervals = [];
 
   /** @type {string[]} Array of image paths for the alert animation. */
   IMAGES_ALERT = [
@@ -79,7 +82,7 @@ class Endboss extends MovableObject {
   /**
    * Creates a new Endboss instance, initializing its position, speed, and loading all images for various states.
    * The player character is passed as an argument to enable interaction.
-   * 
+   *
    * @param {Object} player - The player character that interacts with the end boss.
    */
   constructor(player) {
@@ -117,7 +120,7 @@ class Endboss extends MovableObject {
    * Plays the appropriate animation and moves the end boss accordingly.
    */
   animate() {
-    setInterval(() => {
+    const animationInterval = setInterval(() => {
       if (this.isDeadEndboss()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fallEndboss();
@@ -134,11 +137,12 @@ class Endboss extends MovableObject {
         this.moveLeft();
       }
     }, 200);
-  }
 
+    this.intervals.push(animationInterval);
+  }
   /**
    * Determines if the alert animation should be triggered based on the player's distance from the end boss.
-   * 
+   *
    * @returns {boolean} Whether the alert animation should be triggered.
    */
   shouldTriggerAlert() {
@@ -162,7 +166,7 @@ class Endboss extends MovableObject {
 
   /**
    * Plays an animation sequence once, then optionally executes a callback function upon completion.
-   * 
+   *
    * @param {string[]} images - An array of image paths to cycle through during the animation.
    * @param {Function} [callback] - A function to call when the animation completes.
    */
@@ -176,5 +180,12 @@ class Endboss extends MovableObject {
         if (callback) callback();
       }
     }, 200);
+
+    this.intervals.push(interval);
+  }
+
+  clearIntervals() {
+    this.intervals.forEach((interval) => clearInterval(interval));
+    this.intervals = [];
   }
 }

@@ -39,6 +39,7 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.intervals = [];
     this.draw();
     this.setWorld();
     this.run();
@@ -72,26 +73,26 @@ class World {
    * Starts the game loop by running collision checks and game updates at different intervals.
    */
   run() {
-    setInterval(() => {
+    this.intervals.push(setInterval(() => {
       this.checkBottomTopCollision();
       this.checkCollisionsThrowable();
       this.checkCollisionsEndboss();
-    }, 10);
+    }, 10));
 
-    setInterval(() => {
+    this.intervals.push(setInterval(() => {
       this.checkCollisionCoin();
       this.checkCollisionBottle();
-    }, 1000 / 60);
+    }, 1000 / 60));
 
-    setInterval(() => {
+    this.intervals.push(setInterval(() => {
       this.checkCollisions();
       this.GameOver();
       this.checkCollisionsEB();
-    }, 400);
+    }, 400));
 
-    setInterval(() => {
+    this.intervals.push(setInterval(() => {
       this.checkThrowObjects();
-    }, 200);
+    }, 200));
   }
 
   /**
@@ -202,7 +203,6 @@ class World {
       this.character.bottle--;
       this.statusBar.bottle--;
       this.statusBar.showBottle(this.statusBar.bottle);
-      console.log(this.character.x);
     }
   }
 
@@ -293,6 +293,7 @@ class World {
    */
   GameOver() {
     console.log(this.character.energy);
+  console.log(this.level.endboss[0].energy);
     
     const over = document.getElementById("GameOver");
     if (this.character.energy == 0 && !this.isGameOver) {
@@ -304,5 +305,10 @@ class World {
     } else {
       over.style.display = "none";
     }
+  }
+
+  clearIntervals() {
+    this.intervals.forEach(interval => clearInterval(interval));
+    this.intervals = []; 
   }
 }
