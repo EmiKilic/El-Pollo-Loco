@@ -156,11 +156,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /**
- * Checks if the screen orientation is landscape and displays a rotate message if needed.
+ * Checks if the screen orientation is landscape and displays a rotate message if the device is mobile or tablet.
  */
 function checkOrientation() {
-  document.getElementById("rotateMessage").style.display =
-    window.innerHeight > window.innerWidth ? "block" : "none";
+  const isMobileOrTablet = window.matchMedia("(max-width: 720px)").matches; // Adjust max-width for tablet/mobile
+  if (isMobileOrTablet && window.innerHeight > window.innerWidth) {
+    document.getElementById("rotateMessage").style.display = "block";
+  } else {
+    document.getElementById("rotateMessage").style.display = "none";
+  }
 }
 
 /**
@@ -170,11 +174,28 @@ window.addEventListener("load", checkOrientation);
 window.addEventListener("resize", checkOrientation);
 window.addEventListener("orientationchange", checkOrientation);
 
+/**
+ * Toggles the visibility of the element with ID "impInfo".
+ * 
+ * This function checks the current display style of the "impInfo" element.
+ * If it is currently set to "block", it hides the element by setting the display to "none".
+ * Otherwise, it shows the element by setting the display to "block".
+ * 
+ * @function
+ */
 function toggleImp() {
   const impInfo = document.getElementById("impInfo");
   impInfo.style.display = impInfo.style.display === "block" ? "none" : "block";
 }
 
+/**
+ * Closes (hides) the element with ID "impInfo" by setting its display style to "none".
+ * 
+ * This function ensures that the "impInfo" element is hidden regardless of its current state.
+ * 
+ * @function
+ */
 function closeImp() {
-  document.getElementById("impInfo").style.display == "none";
+  document.getElementById("impInfo").style.display = "none";
 }
+

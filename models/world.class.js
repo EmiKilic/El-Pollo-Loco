@@ -73,26 +73,34 @@ class World {
    * Starts the game loop by running collision checks and game updates at different intervals.
    */
   run() {
-    this.intervals.push(setInterval(() => {
-      this.checkBottomTopCollision();
-      this.checkCollisionsThrowable();
-      this.checkCollisionsEndboss();
-    }, 10));
+    this.intervals.push(
+      setInterval(() => {
+        this.checkBottomTopCollision();
+        this.checkCollisionsThrowable();
+        this.checkCollisionsEndboss();
+      }, 10)
+    );
 
-    this.intervals.push(setInterval(() => {
-      this.checkCollisionCoin();
-      this.checkCollisionBottle();
-    }, 1000 / 60));
+    this.intervals.push(
+      setInterval(() => {
+        this.checkCollisionCoin();
+        this.checkCollisionBottle();
+      }, 1000 / 60)
+    );
 
-    this.intervals.push(setInterval(() => {
-      this.checkCollisions();
-      this.GameOver();
-      this.checkCollisionsEB();
-    }, 400));
+    this.intervals.push(
+      setInterval(() => {
+        this.checkCollisions();
+        this.GameOver();
+        this.checkCollisionsEB();
+      }, 400)
+    );
 
-    this.intervals.push(setInterval(() => {
-      this.checkThrowObjects();
-    }, 200));
+    this.intervals.push(
+      setInterval(() => {
+        this.checkThrowObjects();
+      }, 200)
+    );
   }
 
   /**
@@ -139,14 +147,22 @@ class World {
           this.character.jump();
           enemy.hitEndboss();
           soundEffects.chickenDead.play();
+  
           setInterval(() => {
             enemy.fall();
+          }, 50);
+  
+          const collisionCheckInterval = setInterval(() => {
+            if (this.character.y >= 195) {
+              this.character.y = 195; 
+              clearInterval(collisionCheckInterval);
+            }
           }, 50);
         }
       }
     });
-    let previousY = this.character.y;
   }
+  
 
   /**
    * Checks for collisions between throwable objects (such as bottles) and enemies.
@@ -292,23 +308,30 @@ class World {
    * Checks if the game is over and displays the Game Over screen if the character has no energy left.
    */
   GameOver() {
-    console.log(this.character.energy);
-  console.log(this.level.endboss[0].energy);
-    
     const over = document.getElementById("GameOver");
     if (this.character.energy == 0 && !this.isGameOver) {
       over.style.display = "block";
       gameStarted = false;
       soundEffects.sound.pause();
       soundEffects.damage.pause();
-      
     } else {
       over.style.display = "none";
     }
   }
 
-  clearIntervals() {
-    this.intervals.forEach(interval => clearInterval(interval));
-    this.intervals = []; 
-  }
+/**
+ * Clears all active intervals stored in the `this.intervals` array.
+ * 
+ * This method iterates over the `this.intervals` array and clears each interval 
+ * using the `clearInterval()` function. After clearing all intervals, 
+ * it resets the `this.intervals` array to an empty array to ensure no 
+ * intervals remain.
+ * 
+ * @function
+ */
+clearIntervals() {
+  this.intervals.forEach((interval) => clearInterval(interval));
+  this.intervals = [];
+}
+
 }
