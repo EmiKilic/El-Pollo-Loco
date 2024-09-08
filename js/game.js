@@ -40,14 +40,15 @@ function init() {
  * Restarts the game by resetting the game state and returning to the start screen.
  */
 function restartGame() {
-  Object.values(soundEffects).forEach((sound) => sound.pause());
+  clearSounds();
+
+  world.character.lastActionTime = 0;
 
   document.getElementById("GameWin").style.display = "none";
 
-
   if (world) {
     world.clearIntervals();
-    world.level.endboss.forEach(endboss => endboss.clearIntervals());
+    world.level.endboss.forEach((endboss) => endboss.clearIntervals());
   }
 
   world = null;
@@ -56,12 +57,17 @@ function restartGame() {
   initLevel();
   world = new World(canvas, keyboard);
 
-  world.character.energy = 100;
   world.character.lastHit = 0;
+  world.character.x = 0;
 
   gameStarted = true;
   isGameOver = false;
+
   startGame();
+  soundEffects.currentTime = 0;
+  soundEffects.sound.play();
+  soundEffects.sound.loop = true;
+  0;
 }
 /**
  * Draws the start screen image onto the canvas.
@@ -71,6 +77,21 @@ function drawStartScreen() {
   startImage.src = "img/9_intro_outro_screens/start/startscreen_1.png";
   startImage.onload = () =>
     ctx.drawImage(startImage, 0, 0, canvas.width, canvas.height);
+}
+
+function clearSounds() {
+  soundEffects.damage.pause();
+  soundEffects.sound.pause();
+  soundEffects.coinSound.pause();
+  soundEffects.bottleSound.pause();
+  soundEffects.chickenDead.pause();
+  soundEffects.shatter.pause();
+  soundEffects.gameWin.pause();
+  soundEffects.jumpUp.pause();
+  soundEffects.loose.pause();
+  soundEffects.walking.pause();
+  soundEffects.bossSpawn.pause();
+  soundEffects.sleep.pause();
 }
 
 /**
@@ -176,11 +197,11 @@ window.addEventListener("orientationchange", checkOrientation);
 
 /**
  * Toggles the visibility of the element with ID "impInfo".
- * 
+ *
  * This function checks the current display style of the "impInfo" element.
  * If it is currently set to "block", it hides the element by setting the display to "none".
  * Otherwise, it shows the element by setting the display to "block".
- * 
+ *
  * @function
  */
 function toggleImp() {
@@ -190,12 +211,11 @@ function toggleImp() {
 
 /**
  * Closes (hides) the element with ID "impInfo" by setting its display style to "none".
- * 
+ *
  * This function ensures that the "impInfo" element is hidden regardless of its current state.
- * 
+ *
  * @function
  */
 function closeImp() {
   document.getElementById("impInfo").style.display = "none";
 }
-

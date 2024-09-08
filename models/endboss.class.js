@@ -124,7 +124,6 @@ class Endboss extends MovableObject {
       if (this.isDeadEndboss()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fallEndboss();
-        document.getElementById("GameWin").style.display = "block";
         this.playSound();
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);

@@ -92,6 +92,7 @@ class World {
       setInterval(() => {
         this.checkCollisions();
         this.GameOver();
+        this.GameWin();
         this.checkCollisionsEB();
       }, 400)
     );
@@ -147,11 +148,9 @@ class World {
           this.character.jump();
           enemy.hitEndboss();
           soundEffects.chickenDead.play();
-  
           setInterval(() => {
             enemy.fall();
           }, 50);
-  
           const collisionCheckInterval = setInterval(() => {
             if (this.character.y >= 195) {
               this.character.y = 195; 
@@ -310,6 +309,18 @@ class World {
   GameOver() {
     const over = document.getElementById("GameOver");
     if (this.character.energy == 0 && !this.isGameOver) {
+      over.style.display = "block";
+      gameStarted = false;
+      soundEffects.sound.pause();
+      soundEffects.damage.pause();
+    } else {
+      over.style.display = "none";
+    }
+  }
+
+  GameWin() {
+    const over = document.getElementById("GameWin");
+    if (level1.endboss[0].energy == 40 && !this.isGameOver) {
       over.style.display = "block";
       gameStarted = false;
       soundEffects.sound.pause();

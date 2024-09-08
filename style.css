@@ -11,6 +11,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-family: 'Zabars', Arial, Helvetica, sans-serif;
+    overflow-y: hidden;
 }
 
 
@@ -190,8 +191,8 @@ h1 {
         border-radius: 50%;
         background-color: #F2CB89;
         margin: 5px;
-        height: 40px;
-        width: 40px;
+        height: 20px;
+        width: 20px;
         padding: 10px;
     }
 

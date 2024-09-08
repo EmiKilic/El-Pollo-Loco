@@ -28,14 +28,16 @@ class Character extends MovableObject {
   lastActionTime = new Date().getTime();
 
   /** @type {number} The time limit for the character to remain idle before playing idle animation (default is 10000 ms). */
-  idleTimeLimit = 10000;
+  idleTimeLimit = 2000;
 
   /** @type {boolean} Indicates whether the character is currently walking. */
   isWalking = false;
 
   /** @type {Object} Reference to the world object, which includes game mechanics like the camera and keyboard inputs. */
   world;
-  
+
+  sleepSoundPlaying = false;
+
   /** @type {string[]} Array of image paths for the character's walking animation. */
   IMAGES_WALKING = [
     "img/2_character_pepe/2_walk/W-21.png",
@@ -167,21 +169,36 @@ class Character extends MovableObject {
 
     setInterval(() => {
       const idleDuration = new Date().getTime() - this.lastActionTime;
+      
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
         this.fall();
         this.playSound();
+        soundEffects.sleep.pause(); // Ensure sleep sound stops when dead
+        this.sleepSoundPlaying = false;
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
+        soundEffects.sleep.pause(); // Stop sleep sound if hurt
+        this.sleepSoundPlaying = false;
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
-      } else if (idleDuration > this.idleTimeLimit) {
+        soundEffects.sleep.pause(); // Stop sleep sound if jumping
+        this.sleepSoundPlaying = false;
+      } else if (idleDuration > this.idleTimeLimit && gameStarted == true && this.x >= 10) {
         this.playAnimation(this.IMAGE_WAITING);
-        soundEffects.sleep.play();
+    
+        if (!this.sleepSoundPlaying) { // Only play the sleep sound if it isn't already playing
+          soundEffects.sleep.play();
+          this.sleepSoundPlaying = true; // Mark the sound as playing
+        }
       } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGES_WALKING);
-      } else if (!this.world.keyboard.RIGHT || !this.world.keyboard.LEFT) {
+        soundEffects.sleep.pause(); // Stop sleep sound if walking
+        this.sleepSoundPlaying = false; // Reset sound status
+      } else if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
         this.playAnimation(this.IMAGE_IDLE);
+        soundEffects.sleep.pause(); // Stop sleep sound if idle
+        this.sleepSoundPlaying = false; // Reset sound status
       }
     }, 150);
   }
